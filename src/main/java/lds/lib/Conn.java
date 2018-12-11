@@ -5,38 +5,56 @@
 
 package lds.lib;
 
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import org.apache.commons.dbcp.BasicDataSource;
 
 public class Conn {
-    private Connection db_conn;
-    private Driver db_driver;
-    private final String db_user, db_pass, db_url;
-
-    public Conn() {
+    private static final BasicDataSource DATASOURCE = new BasicDataSource();
+    private static String errmsg;
+    
+    static {
         try {
-            this.db_driver = new com.mysql.jdbc.Driver();
-        } catch (SQLException ex) {
-            Logger.getLogger(Conn.class.getName()).log(Level.SEVERE, null, ex);
+            String server = "localhost";
+            String port = "3306";
+            String timezone = "GMT";
+            String database = "lds";
+            String username = "root";
+            String password = "";
+            String url = String.format("jdbc:mysql://address=(host=%s)(port=%s)(serverTimezone=%s)/%s",
+                server, 
+                port, 
+                timezone,
+                database
+            );
+            DATASOURCE.setUrl(url);
+            DATASOURCE.setUsername(username);
+            DATASOURCE.setPassword(password);
+            DATASOURCE.setMinIdle(5);
+            DATASOURCE.setMaxIdle(10);
+            DATASOURCE.setMaxOpenPreparedStatements(100);
+        } catch (Exception ex) {
+            errmsg = ex.getMessage();
         }
-        this.db_user = "root";
-        this.db_pass = "";
-        this.db_url = "jdbc:mysql://localhost:3306/lds_logistic";
     }
     
-     public Object initConn() {
-        Object result = null;
-        if(this.db_conn == null) {
-            try {
-                DriverManager.registerDriver(this.db_driver);
-                this.db_conn = DriverManager.getConnection(this.db_url, this.db_user, this.db_pass);
-                result = this.db_conn;
-            } catch (SQLException ex) {
-                result = (String) "Error unable to connect to MySQL.";
-            }
-        }
-        return result;
-    }
+    private Conn() {}
     
+    public static Connection initConn() throws SQLException {
+        Connection con = null;
+        try {
+            con = DATASOURCE.getConnection();
+        } catch (SQLException e) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Error: ").append(errmsg).append("\n");
+            sb.append("Cannot connect to MySQL.");
+            
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, sb, "LDS : Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return con;
+    }
 }
+

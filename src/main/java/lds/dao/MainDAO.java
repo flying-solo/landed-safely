@@ -3,9 +3,10 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.lib;
+package lds.dao;
 
 
-public class Employee {
 
+public interface MainDAO {
+    
 }
