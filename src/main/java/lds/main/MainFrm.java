@@ -151,7 +151,7 @@ public class MainFrm extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         mnTrx = new javax.swing.JMenuItem();
         mnFleet = new javax.swing.JMenuItem();
-        mnCoverage = new javax.swing.JMenuItem();
+        mnRegion = new javax.swing.JMenuItem();
         mnPrice = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnEmployee = new javax.swing.JMenuItem();
@@ -279,7 +279,7 @@ public class MainFrm extends javax.swing.JFrame {
 
         labelActive.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         labelActive.setForeground(new java.awt.Color(51, 204, 0));
-        labelActive.setText("kaboel");
+        labelActive.setText("Active");
 
         labelImg.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
         labelImg.setForeground(new java.awt.Color(140, 140, 140));
@@ -353,14 +353,14 @@ public class MainFrm extends javax.swing.JFrame {
         });
         jMenu2.add(mnFleet);
 
-        mnCoverage.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
-        mnCoverage.setText("Coverage");
-        mnCoverage.addActionListener(new java.awt.event.ActionListener() {
+        mnRegion.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
+        mnRegion.setText("Region");
+        mnRegion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnCoverageActionPerformed(evt);
+                mnRegionActionPerformed(evt);
             }
         });
-        jMenu2.add(mnCoverage);
+        jMenu2.add(mnRegion);
 
         mnPrice.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         mnPrice.setText("Price");
@@ -455,9 +455,9 @@ public class MainFrm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mnFleetActionPerformed
 
-    private void mnCoverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCoverageActionPerformed
+    private void mnRegionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRegionActionPerformed
 //        this.enaCovPanel();
-    }//GEN-LAST:event_mnCoverageActionPerformed
+    }//GEN-LAST:event_mnRegionActionPerformed
 
     private void mnPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPriceActionPerformed
 //        this.enaPrcPanel();
@@ -528,11 +528,11 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel labelLogin;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mnAdmin;
-    private javax.swing.JMenuItem mnCoverage;
     private javax.swing.JMenuItem mnEmployee;
     private javax.swing.JMenuItem mnFleet;
     private javax.swing.JMenuItem mnLogout;
     private javax.swing.JMenuItem mnPrice;
+    private javax.swing.JMenuItem mnRegion;
     private javax.swing.JMenuItem mnTrx;
     private javax.swing.JMenuItem mnUpdPass;
     private javax.swing.JMenuItem mnUpdProf;
