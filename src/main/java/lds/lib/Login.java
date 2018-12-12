@@ -5,10 +5,13 @@
 
 package lds.lib;
 
+import lds.entities.Admin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 
 public class Login {
@@ -49,7 +52,12 @@ public class Login {
                 result = setUser(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            StringBuilder sb = new StringBuilder();
+            sb.append("Error: ").append(e.getMessage()).append("\n");
+            sb.append("Cannot login at the momment.");
+            
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, sb, "LDS : Error", JOptionPane.ERROR_MESSAGE);
         }
         return result;
     }
