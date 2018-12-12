@@ -11,6 +11,8 @@ import java.sql.Date;
 public class Trx {
     private final int trxId;
     private final Admin admin;
+    private final Employee courier;
+    private final Fleet fleet;
     private final Region origin;
     private final Region destination;
     private final String pkgDetails;
@@ -22,9 +24,11 @@ public class Trx {
     private final int status;
     private final int discount;
 
-    public Trx(int trxId, Admin admin, Region origin, Region destination, String pkgDetails, int pkgWeight, Type pkgtype, Service serviceType, Date dateReg, Date dateArrived, int status, int discount) {
+    public Trx(int trxId, Admin admin, Employee courier, Fleet fleet, Region origin, Region destination, String pkgDetails, int pkgWeight, Type pkgtype, Service serviceType, Date dateReg, Date dateArrived, int status, int discount) {
         this.trxId = trxId;
         this.admin = admin;
+        this.courier = courier;
+        this.fleet = fleet;
         this.origin = origin;
         this.destination = destination;
         this.pkgDetails = pkgDetails;
@@ -43,6 +47,14 @@ public class Trx {
 
     public Admin getAdmin() {
         return admin;
+    }
+
+    public Employee getCourier() {
+        return courier;
+    }
+
+    public Fleet getFleet() {
+        return fleet;
     }
 
     public Region getOrigin() {
@@ -84,6 +96,8 @@ public class Trx {
     public int getDiscount() {
         return discount;
     }
+
+    
     
     
 }
