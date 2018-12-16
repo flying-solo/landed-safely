@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import lds.entities.Admin;
 import lds.lib.Login;
 
@@ -43,7 +42,7 @@ public class MainFrm extends javax.swing.JFrame {
     
 // ---------------------------------------------------------------
     
-    private Integer confPrompt(String msg) {
+    public Integer confPrompt(String msg) {
         Object options[] = {"Yes", "No"};
         int result = JOptionPane.showOptionDialog(
                 null, msg, "LDS (Confirmation)",
@@ -89,6 +88,10 @@ public class MainFrm extends javax.swing.JFrame {
         this.activeUser = activeUser;
     }
     
+    public Admin getActiveUser() {
+        return this.activeUser;
+    }
+    
     private void clearLoginFields() {
         this.txtUser.setText("");
         this.txtPass.setText("");
@@ -102,6 +105,7 @@ public class MainFrm extends javax.swing.JFrame {
         this.activeFrame = frame;
         showFrame();
     }
+    
     
     private void showFrame() {
         Dimension contSize = windowCont.getSize();
@@ -163,7 +167,7 @@ public class MainFrm extends javax.swing.JFrame {
 
         parentPanel.setLayout(new java.awt.CardLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sign In", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Ubuntu", 3, 18), new java.awt.Color(153, 153, 153))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Sign In", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 3, 18), new java.awt.Color(153, 153, 153))); // NOI18N
 
         txtUser.setPreferredSize(new java.awt.Dimension(18, 23));
 
@@ -235,21 +239,24 @@ public class MainFrm extends javax.swing.JFrame {
         childPanel0.setLayout(childPanel0Layout);
         childPanel0Layout.setHorizontalGroup(
             childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, childPanel0Layout.createSequentialGroup()
-                .addContainerGap(332, Short.MAX_VALUE)
-                .addGroup(childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(332, 332, 332))
+            .addGroup(childPanel0Layout.createSequentialGroup()
+                .addGroup(childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(childPanel0Layout.createSequentialGroup()
+                        .addGap(329, 329, 329)
+                        .addComponent(labelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(childPanel0Layout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         childPanel0Layout.setVerticalGroup(
             childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(childPanel0Layout.createSequentialGroup()
-                .addGap(144, 144, 144)
+                .addGap(85, 85, 85)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(77, 77, 77)
                 .addComponent(labelLogin)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         parentPanel.add(childPanel0, "card2");
@@ -260,11 +267,11 @@ public class MainFrm extends javax.swing.JFrame {
         windowCont.setLayout(windowContLayout);
         windowContLayout.setHorizontalGroup(
             windowContLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1022, Short.MAX_VALUE)
+            .addGap(0, 705, Short.MAX_VALUE)
         );
         windowContLayout.setVerticalGroup(
             windowContLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGap(0, 436, Short.MAX_VALUE)
         );
 
         childPanel1.add(windowCont, java.awt.BorderLayout.CENTER);
@@ -398,8 +405,8 @@ public class MainFrm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(parentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,6 +418,46 @@ public class MainFrm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnLogoutActionPerformed
+        int result = confPrompt("Are you sure you want to Logout?");
+        if(result == JOptionPane.YES_OPTION) {
+            this.setActiveUser(null);
+            this.resetWindow();
+            this.setExtendedState(0);
+            this.pack();
+        }
+    }//GEN-LAST:event_mnLogoutActionPerformed
+
+    private void mnTrxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnTrxActionPerformed
+        TrxFrm frm = new TrxFrm();
+        this.setActiveFrame(frm);
+    }//GEN-LAST:event_mnTrxActionPerformed
+
+    private void mnFleetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFleetActionPerformed
+        
+    }//GEN-LAST:event_mnFleetActionPerformed
+
+    private void mnRegionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRegionActionPerformed
+//        this.enaCovPanel();
+    }//GEN-LAST:event_mnRegionActionPerformed
+
+    private void mnPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPriceActionPerformed
+//        this.enaPrcPanel();
+    }//GEN-LAST:event_mnPriceActionPerformed
+
+    private void mnEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEmployeeActionPerformed
+        EmpFrm frm = new EmpFrm();
+        this.setActiveFrame(frm);
+    }//GEN-LAST:event_mnEmployeeActionPerformed
+
+    private void mnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAdminActionPerformed
+//        this.enaAdmPanel();
+    }//GEN-LAST:event_mnAdminActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        this.clearLoginFields();
+    }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String str;
@@ -431,45 +478,6 @@ public class MainFrm extends javax.swing.JFrame {
             this.labelLogin.setText("* Fields cannot be empty ! *");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        this.clearLoginFields();
-    }//GEN-LAST:event_btnResetActionPerformed
-
-    private void mnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnLogoutActionPerformed
-        int result = confPrompt("Are you sure you want to Logout?");
-        if(result == JOptionPane.YES_OPTION) {
-            this.setActiveUser(null);
-            this.resetWindow();
-            this.setExtendedState(0);
-            this.pack();
-        }
-    }//GEN-LAST:event_mnLogoutActionPerformed
-
-    private void mnTrxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnTrxActionPerformed
-        TrxFrm trx = new TrxFrm();
-        this.setActiveFrame(trx);
-    }//GEN-LAST:event_mnTrxActionPerformed
-
-    private void mnFleetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFleetActionPerformed
-        
-    }//GEN-LAST:event_mnFleetActionPerformed
-
-    private void mnRegionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRegionActionPerformed
-//        this.enaCovPanel();
-    }//GEN-LAST:event_mnRegionActionPerformed
-
-    private void mnPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPriceActionPerformed
-//        this.enaPrcPanel();
-    }//GEN-LAST:event_mnPriceActionPerformed
-
-    private void mnEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEmployeeActionPerformed
-//        this.enaEmpPanel();
-    }//GEN-LAST:event_mnEmployeeActionPerformed
-
-    private void mnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAdminActionPerformed
-//        this.enaAdmPanel();
-    }//GEN-LAST:event_mnAdminActionPerformed
 
     /**
      * @param args the command line arguments
