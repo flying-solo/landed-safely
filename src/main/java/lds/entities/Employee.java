@@ -55,8 +55,8 @@ public class Employee {
         this.firstname = firstname;
     }
 
-    public String getGender() {
-        return (this.gender == 1 ? "Laki - laki" : "Perempuan");
+    public int getGender() {
+        return this.gender;
     }
 
     public void setGender(int gender) {
@@ -103,29 +103,16 @@ public class Employee {
         this.date_upd = date_upd;
     }
 
-    public String getPosition() {
-        String str;
-        switch(this.position) {
-            case 1  : str = "Courier"; break;
-            case 2  : str = "Staff"; break;
-            case 3  : str = "Supervisor"; break;
-            default : str = "Not Positioned Yet";
-        }
-        return str;
+    public int getPosition() {
+        return this.position;
     }
 
     public void setPosition(int position) {
         this.position = position;
     }
 
-    public String getActivation() {
-        String str;
-        if(this.activation == 0) {
-            str = "Non-Active";
-        } else {
-            str = "Active";
-        }
-        return str;
+    public int getActivation() {
+        return this.activation;
     }
 
     public void setActivation(int activation) {
