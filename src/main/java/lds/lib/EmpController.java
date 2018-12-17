@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import lds.dao.EmpDAO;
 import lds.entities.Employee;
@@ -122,13 +123,28 @@ public class EmpController implements EmpDAO {
     }
     
     @Override
-    public boolean insertEmp(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean updateEmp(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean insertEmp(Employee emp) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement("INSERT INTO t_employee ("
+                    + "lastname, firstname, gender, email, address, phone, position"
+                    + ") VALUES (?, ?, ?, ?, ?, ?, ?)");
+            st.setString(1, emp.getLastname());
+            st.setString(2, emp.getFirstname());
+            st.setInt(3, emp.getGender());
+            st.setString(4, emp.getEmail());
+            st.setString(5, emp.getAddress());
+            st.setString(6, emp.getPhone());
+            st.setInt(7, emp.getPosition());
+            int i = st.executeUpdate();
+            if(i == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return false;
     }
     
     @Override
@@ -142,8 +158,8 @@ public class EmpController implements EmpDAO {
         try {
             Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("UPDATE t_employee SET activation = ? WHERE id_employee = ?");
-            st.setInt(1, new Integer(id));
-            st.setInt(2, new Integer(newstat));
+            st.setInt(1, new Integer(newstat));
+            st.setInt(2, new Integer(id));
             int i = st.executeUpdate();
             if(i == 1) {
                 return true;
@@ -156,7 +172,17 @@ public class EmpController implements EmpDAO {
 
     @Override
     public boolean deleteEmp(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            Connection con = Conn.initConn();
+            Statement st = con.createStatement();
+            int i = st.executeUpdate("DELETE FROM t_employee WHERE id_employee = "+ id);
+            if(i == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
     
 }
