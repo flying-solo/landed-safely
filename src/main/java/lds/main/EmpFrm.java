@@ -4,9 +4,13 @@
  */
 package lds.main;
 
+import java.awt.Color;
 import java.awt.event.ItemEvent;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import lds.frames.AddEmpFrm;
 import lds.lib.EmpController;
+import lds.lib.PrintPDF;
 import lds.models.EmpGridModel;
 
 /**
@@ -15,15 +19,24 @@ import lds.models.EmpGridModel;
  */
 public class EmpFrm extends javax.swing.JInternalFrame {
     
+    private final MainFrm main = new MainFrm();
     private final EmpGridModel gridModel;
     private final EmpController controller;
+    
+    private JDialog dialog;
+    private PrintPDF pdf;
     
     public EmpFrm() {
         this.controller = new EmpController();
         this.gridModel = new EmpGridModel(controller.getAllEmp());
         
-        
+//-------------------------------------------------------------------------        
+       
         initComponents();
+        
+//-------------------------------------------------------------------------        
+        
+        this.setDataNotif(this.gridModel.getRowCount());
     }
     
     private boolean isCleared() {
@@ -33,6 +46,21 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     private String getSelectedId() {
         String id = this.gridModel.getValueAt(empDataGrid.getSelectedRow(), 7).toString();
         return id;
+    }
+    
+    private void setDataNotif(int count) {
+        if(count == 0) {
+            this.dataNotif.setText("No data found.");
+        } else {
+            this.dataNotif.setText("Found "+ count +" rows.");
+        }
+    }
+    
+    private void setDialog(JDialog dialog) {
+        this.dialog = dialog;
+        this.dialog.setLocationRelativeTo(null);
+        this.dialog.setResizable(false);
+        this.dialog.setVisible(true);
     }
     
     /**
@@ -50,13 +78,12 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         btnPrntXls = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnFilter = new javax.swing.JButton();
-        comboRows = new javax.swing.JComboBox<>();
-        jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         empDataGrid = new javax.swing.JTable(this.gridModel);
         btnDeleteRow = new javax.swing.JButton();
         btnChangeStat = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
+        dataNotif = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         comboPosition = new javax.swing.JComboBox<>();
@@ -76,6 +103,11 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         btnPrntPdf.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnPrntPdf.setText("Print .pdf");
         btnPrntPdf.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnPrntPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrntPdfActionPerformed(evt);
+            }
+        });
 
         btnPrntXls.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnPrntXls.setText("Print .xls");
@@ -84,6 +116,11 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         btnAdd.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnAdd.setText("+ Add New");
         btnAdd.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         btnFilter.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnFilter.setText("FIlter");
@@ -94,19 +131,17 @@ public class EmpFrm extends javax.swing.JInternalFrame {
             }
         });
 
-        comboRows.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "10", "25", "50" }));
-        comboRows.setPreferredSize(new java.awt.Dimension(60, 25));
-
-        jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Rows");
-
         empDataGrid.setModel(this.gridModel);
         jScrollPane1.setViewportView(empDataGrid);
 
         btnDeleteRow.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnDeleteRow.setText("Delete Selected");
         btnDeleteRow.setPreferredSize(new java.awt.Dimension(130, 30));
+        btnDeleteRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteRowActionPerformed(evt);
+            }
+        });
 
         btnChangeStat.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnChangeStat.setText("Change Status");
@@ -126,6 +161,10 @@ public class EmpFrm extends javax.swing.JInternalFrame {
             }
         });
 
+        dataNotif.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        dataNotif.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dataNotif.setText("jlabel");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,11 +182,9 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(dataNotif, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPrntXls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,9 +202,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(comboRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel12)
-                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dataNotif)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -316,21 +352,15 @@ public class EmpFrm extends javax.swing.JInternalFrame {
             int status = this.comboStatus.getSelectedIndex();
             this.gridModel.setData(this.controller.getEmpByStatus(Integer.toString(status)));
         }
-        int count = this.comboRows.getSelectedIndex();
-        switch(count) {
-            case 0  : this.gridModel.setRowCount(-1); break;
-            case 1  : this.gridModel.setRowCount(10); break;
-            case 2  : this.gridModel.setRowCount(25); break;
-            case 3  : this.gridModel.setRowCount(50); break;
-            default : this.gridModel.setRowCount(-1); break;
-        }
-        
+        setDataNotif(this.gridModel.getRowCount());
         this.gridModel.fireTableDataChanged();
     }//GEN-LAST:event_btnFilterActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         this.radGroup.clearSelection();
-        this.comboRows.setSelectedIndex(0);
+        this.txtName.setText("");
+        this.comboPosition.setSelectedIndex(0);
+        this.comboStatus.setSelectedIndex(0);
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnChangeStatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeStatActionPerformed
@@ -343,6 +373,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         } else {
             empstat = "0";
         }
+//        System.out.println("ID : "+ empId +"Status : "+ empstat);
         StringBuilder sb = new StringBuilder();
         String msg;
         int ico;
@@ -355,10 +386,39 @@ public class EmpFrm extends javax.swing.JInternalFrame {
             ico = JOptionPane.ERROR_MESSAGE;
             msg = "LDS : Error";
         }
-        JOptionPane.showMessageDialog(new MainFrm(), sb, msg, ico);
-        
-        this.gridModel.fireTableDataChanged();
+        JOptionPane.showMessageDialog(this.main, sb, msg, ico);
+        this.btnFilterActionPerformed(evt);
     }//GEN-LAST:event_btnChangeStatActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        AddEmpFrm frm = new AddEmpFrm(this.main, true);
+        setDialog(frm);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRowActionPerformed
+        int i = this.main.confPrompt("Are you sure you want to delete this employee?");
+        if(i == JOptionPane.YES_OPTION) {
+            StringBuilder sb = new StringBuilder();
+            String msg;
+            int ico;
+            if(this.controller.deleteEmp(this.getSelectedId())) {
+                sb.append("Selected employee deleted !");
+                ico = JOptionPane.INFORMATION_MESSAGE;
+                msg = "LDS : Information";
+            } else {
+                sb.append("Unable to delete selected employee.");
+                ico = JOptionPane.ERROR_MESSAGE;
+                msg = "LDS : Error";
+            }
+            JOptionPane.showMessageDialog(this.main, sb, msg, ico);
+            this.btnFilterActionPerformed(evt);
+        }
+    }//GEN-LAST:event_btnDeleteRowActionPerformed
+
+    private void btnPrntPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntPdfActionPerformed
+        this.pdf = new PrintPDF(empDataGrid, "Employees");
+        this.pdf.print();
+    }//GEN-LAST:event_btnPrntPdfActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -370,12 +430,11 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnPrntXls;
     private javax.swing.JButton btnReset;
     private javax.swing.JComboBox<String> comboPosition;
-    private javax.swing.JComboBox<String> comboRows;
     private javax.swing.JComboBox<String> comboStatus;
+    private javax.swing.JLabel dataNotif;
     private javax.swing.JTable empDataGrid;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
