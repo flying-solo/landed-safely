@@ -4,12 +4,20 @@
  */
 package lds.frames;
 
+import javax.swing.JOptionPane;
+import lds.entities.Employee;
+import lds.lib.EmpController;
+import lds.main.MainFrm;
+
 /**
  *
  * @author kaboel
  */
 public class AddEmpFrm extends javax.swing.JDialog {
 
+    private final MainFrm main;
+    private final EmpController controller;
+    
     /**
      * Creates new form AddEmpFrm
      * @param parent
@@ -17,6 +25,8 @@ public class AddEmpFrm extends javax.swing.JDialog {
      */
     public AddEmpFrm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.main = new MainFrm();
+        this.controller = new EmpController();
         initComponents();
     }
 
@@ -56,11 +66,11 @@ public class AddEmpFrm extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Lastname");
+        jLabel1.setText("* Lastname");
 
         jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Firstname");
+        jLabel2.setText("* Firstname");
 
         radGroup.add(radMale);
         radMale.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
@@ -74,15 +84,15 @@ public class AddEmpFrm extends javax.swing.JDialog {
 
         jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Gender");
+        jLabel3.setText("* Gender");
 
         jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("Email Address");
+        jLabel4.setText("* Email Address");
 
         jLabel5.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Home Address");
+        jLabel5.setText("* Home Address");
 
         txtAddr.setColumns(20);
         txtAddr.setRows(5);
@@ -90,7 +100,7 @@ public class AddEmpFrm extends javax.swing.JDialog {
 
         jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Phone Number");
+        jLabel6.setText("* Phone Number");
 
         comboPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Position this employee later.", "Courier", "Staff", "Supervisor" }));
 
@@ -110,6 +120,11 @@ public class AddEmpFrm extends javax.swing.JDialog {
         btnSave.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnSave.setText("Save");
         btnSave.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -190,6 +205,32 @@ public class AddEmpFrm extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private Employee newEmployee() {
+        int gender = 0;
+        if(this.radGroup.getSelection() == this.radMale.getModel()) {
+            gender = 1;
+        }
+        Employee emp = new Employee(
+            this.txtLast.getText(),
+            this.txtFirst.getText(),
+            gender,
+            this.txtEmail.getText(),
+            this.txtAddr.getText(),
+            this.txtPhone.getText(),
+            this.comboPosition.getSelectedIndex()
+        );
+        return emp;
+    }
+    
+    private boolean isEmpty() {
+        return  this.txtLast.getText() == null  || this.txtLast.getText().equals("") &&
+                this.txtFirst.getText() == null || this.txtLast.getText().equals("") &&
+                this.txtEmail.getText() == null || this.txtEmail.getText().equals("") &&
+                this.txtAddr.getText() == null || this.txtEmail.getText().equals("") &&
+                this.txtPhone.getText() == null || this.txtPhone.getText().equals("") &&
+                this.radGroup.getSelection() == null;
+    }
+    
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         this.radGroup.clearSelection();
         this.txtLast.setText("");
@@ -199,6 +240,29 @@ public class AddEmpFrm extends javax.swing.JDialog {
         this.txtPhone.setText("");
         this.comboPosition.setSelectedIndex(0);
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        StringBuilder sb = new StringBuilder();
+        String ttl;
+        int type;
+        if(!isEmpty()) {
+            if(this.controller.insertEmp(this.newEmployee())) {
+                sb.append("New data saved !");
+                ttl = "LDS : Information";
+                type = JOptionPane.INFORMATION_MESSAGE;
+                this.dispose();
+            } else {
+                sb.append("Unable to save data.");
+                ttl = "LDS : Error";
+                type = JOptionPane.ERROR_MESSAGE;
+            }
+        } else {
+            sb.append("Fields with * marker cannot be empty.");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+        }
+        this.main.userDialog(sb, ttl, type);
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
