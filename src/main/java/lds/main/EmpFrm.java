@@ -4,10 +4,10 @@
  */
 package lds.main;
 
-import java.awt.Color;
 import java.awt.event.ItemEvent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import lds.frames.AddEmpFrm;
 import lds.lib.EmpController;
 import lds.lib.PrintPDF;
@@ -30,13 +30,14 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         this.controller = new EmpController();
         this.gridModel = new EmpGridModel(controller.getAllEmp());
         
-//-------------------------------------------------------------------------        
-       
         initComponents();
         
-//-------------------------------------------------------------------------        
-        
         this.setDataNotif(this.gridModel.getRowCount());
+    }
+    
+    private int[] selectedRows() {
+        int i[] = this.empDataGrid.getSelectedRows();
+        return i;
     }
     
     private boolean isCleared() {
@@ -84,6 +85,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         btnChangeStat = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         dataNotif = new javax.swing.JLabel();
+        btnChangePos = new javax.swing.JButton();
+        comboNewPosition = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         comboPosition = new javax.swing.JComboBox<>();
@@ -132,6 +135,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         });
 
         empDataGrid.setModel(this.gridModel);
+        empDataGrid.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(empDataGrid);
 
         btnDeleteRow.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
@@ -165,6 +169,17 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         dataNotif.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dataNotif.setText("jlabel");
 
+        btnChangePos.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
+        btnChangePos.setText("Change Position");
+        btnChangePos.setPreferredSize(new java.awt.Dimension(130, 30));
+        btnChangePos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePosActionPerformed(evt);
+            }
+        });
+
+        comboNewPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Not positioned yet", "Courier", "Staff", "Supervisor" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -174,7 +189,10 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(comboNewPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnChangePos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnChangeStat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeleteRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -209,7 +227,10 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDeleteRow, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnChangeStat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnChangeStat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnChangePos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboNewPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12))
         );
 
@@ -364,71 +385,114 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnChangeStatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeStatActionPerformed
-        String empId = getSelectedId();
-        String stat = this.gridModel.getValueAt(empDataGrid.getSelectedRow(), 6).toString();
-        String empstat;
-       
-        if(stat.equalsIgnoreCase("Active")) {
-            empstat = "1";
-        } else {
-            empstat = "0";
-        }
-//        System.out.println("ID : "+ empId +"Status : "+ empstat);
         StringBuilder sb = new StringBuilder();
-        String msg;
-        int ico;
-        if(this.controller.updateStat(empId, empstat)) {
-            sb.append("Status changed !");
-            ico = JOptionPane.INFORMATION_MESSAGE;
-            msg = "LDS : Information";
+        String ttl;
+        int type;
+        if(this.empDataGrid.getSelectedRow()<0) {
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
         } else {
-            sb.append("Unable to change status.");
-            ico = JOptionPane.ERROR_MESSAGE;
-            msg = "LDS : Error";
+            String empId = getSelectedId();
+            String stat = this.gridModel.getValueAt(empDataGrid.getSelectedRow(), 6).toString();
+            String empstat;
+            if(stat.equalsIgnoreCase("Active")) {
+                empstat = "1";
+            } else {
+                empstat = "0";
+            }
+            if(this.controller.updateStat(empId, empstat)) {
+                sb.append("Status changed !");
+                type = JOptionPane.INFORMATION_MESSAGE;
+                ttl = "LDS : Information";
+            } else {
+                sb.append("Unable to change status.");
+                type = JOptionPane.ERROR_MESSAGE;
+                ttl = "LDS : Error";
+            }
+            this.btnFilterActionPerformed(evt);
         }
-        JOptionPane.showMessageDialog(this.main, sb, msg, ico);
-        this.btnFilterActionPerformed(evt);
+        this.main.userDialog(sb, ttl, type);
     }//GEN-LAST:event_btnChangeStatActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         AddEmpFrm frm = new AddEmpFrm(this.main, true);
         setDialog(frm);
+        this.btnFilterActionPerformed(evt);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRowActionPerformed
-        int i = this.main.confPrompt("Are you sure you want to delete this employee?");
-        if(i == JOptionPane.YES_OPTION) {
-            StringBuilder sb = new StringBuilder();
-            String msg;
-            int ico;
-            if(this.controller.deleteEmp(this.getSelectedId())) {
-                sb.append("Selected employee deleted !");
-                ico = JOptionPane.INFORMATION_MESSAGE;
-                msg = "LDS : Information";
-            } else {
-                sb.append("Unable to delete selected employee.");
-                ico = JOptionPane.ERROR_MESSAGE;
-                msg = "LDS : Error";
+        StringBuilder sb = new StringBuilder();
+        String ttl = "";
+        int type = 0;
+        if(this.empDataGrid.getSelectedRow()<0) {
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+        } else {
+            int i = this.main.confPrompt("Are you sure you want to delete this employee?");
+            if(i == JOptionPane.YES_OPTION) {
+                if(this.controller.deleteEmp(this.getSelectedId())) {
+                    sb.append("Selected employee deleted !");
+                    type = JOptionPane.INFORMATION_MESSAGE;
+                    ttl = "LDS : Information";
+                } else {
+                    sb.append("Unable to delete selected employee.");
+                    type = JOptionPane.ERROR_MESSAGE;
+                    ttl = "LDS : Error";
+                }
+                this.btnFilterActionPerformed(evt);
             }
-            JOptionPane.showMessageDialog(this.main, sb, msg, ico);
-            this.btnFilterActionPerformed(evt);
         }
+        this.main.userDialog(sb, ttl, type);
     }//GEN-LAST:event_btnDeleteRowActionPerformed
 
     private void btnPrntPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntPdfActionPerformed
         this.pdf = new PrintPDF(empDataGrid, "Employees");
+        StringBuilder sb = new StringBuilder();
+        sb.append("PDF exported to home/Documents/ ");
+        String ttl = "LDS : Information";
+        int type = JOptionPane.INFORMATION_MESSAGE;
+        this.main.userDialog(sb, ttl, type);
         this.pdf.print();
     }//GEN-LAST:event_btnPrntPdfActionPerformed
+
+    private void btnChangePosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePosActionPerformed
+        int position = this.comboNewPosition.getSelectedIndex();
+        StringBuilder sb = new StringBuilder();
+        String ttl;
+        int type;
+        if(this.empDataGrid.getSelectedRow()<0) {
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+        } else {
+            if(this.controller.updatePosition(this.getSelectedId(), Integer.toString(position))) {
+                sb.append("Position changed !");
+                ttl = "LDS : Information";
+                type = JOptionPane.INFORMATION_MESSAGE;
+                this.comboNewPosition.setSelectedIndex(0);
+                this.btnFilterActionPerformed(evt);
+            } else {
+                sb.append("Unable to change position.");
+                ttl = "LDS : Error";
+                type = JOptionPane.ERROR_MESSAGE;
+            }
+        }
+        this.main.userDialog(sb, ttl, type);
+    }//GEN-LAST:event_btnChangePosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnChangePos;
     private javax.swing.JButton btnChangeStat;
     private javax.swing.JButton btnDeleteRow;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnPrntPdf;
     private javax.swing.JButton btnPrntXls;
     private javax.swing.JButton btnReset;
+    private javax.swing.JComboBox<String> comboNewPosition;
     private javax.swing.JComboBox<String> comboPosition;
     private javax.swing.JComboBox<String> comboStatus;
     private javax.swing.JLabel dataNotif;
