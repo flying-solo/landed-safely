@@ -16,8 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import javax.swing.JTable;
 
-
-
 public class PrintPDF {
     
     private final JTable table;
@@ -30,8 +28,9 @@ public class PrintPDF {
     
     public void print() {
         Document doc = new Document(PageSize.A4.rotate());
+        String home = System.getProperty("user.home");
         try {
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(dtCategory+".pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(home +"/"+ dtCategory +".pdf"));
             
             doc.open();
             PdfContentByte cb = writer.getDirectContent();
@@ -52,5 +51,5 @@ public class PrintPDF {
         }
         doc.close();
     }
-    
+
 }
