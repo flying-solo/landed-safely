@@ -13,6 +13,7 @@ public interface EmpDAO {
     ArrayList<Employee> getEmpByStatus(String status);
     ArrayList<Employee> getEmpByPosition(String position);
     boolean insertEmp(Employee emp);
-    boolean updateStat(String id, String stat);
+    boolean updateStat(String id, String status);
+    boolean updatePosition(String id, String position);
     boolean deleteEmp(String id);
  }
