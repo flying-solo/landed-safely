@@ -171,6 +171,23 @@ public class EmpController implements EmpDAO {
     }
 
     @Override
+    public boolean updatePosition(String id, String position) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement("UPDATE t_employee SET position = ? WHERE id_employee = ?");
+            st.setInt(1, new Integer(position));
+            st.setInt(2, new Integer(id));
+            int i = st.executeUpdate();
+            if(i == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
     public boolean deleteEmp(String id) {
         try {
             Connection con = Conn.initConn();
