@@ -42,6 +42,10 @@ public class MainFrm extends javax.swing.JFrame {
     
 // ---------------------------------------------------------------
     
+    public void userDialog(StringBuilder msg, String ttl, int type) {
+        JOptionPane.showMessageDialog(this, msg, ttl, type);
+    }
+    
     public Integer confPrompt(String msg) {
         Object options[] = {"Yes", "No"};
         int result = JOptionPane.showOptionDialog(
@@ -52,10 +56,12 @@ public class MainFrm extends javax.swing.JFrame {
         return result;
     }
     
+// ---------------------------------------------------------------   
     private void resetWindow() {
         this.parentPanel.removeAll();
         this.parentPanel.add(this.childPanel0);
         this.hasLoggedIn();
+        this.pack();
     }
     
     private void hasLoggedIn() {
@@ -68,7 +74,7 @@ public class MainFrm extends javax.swing.JFrame {
             this.setResizable(true);
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             JOptionPane.showMessageDialog(
-                    this, "Welcome "+ activeUser.toString() +" !", "Welcome", JOptionPane.PLAIN_MESSAGE);
+                    this, "Welcome "+ activeUser.toString() +" !", "Welcome", JOptionPane.INFORMATION_MESSAGE);
         } else {
             this.menuBar.setVisible(false);
             this.bottomPanel.setVisible(false);
@@ -81,6 +87,9 @@ public class MainFrm extends javax.swing.JFrame {
         if(this.activeUser.getPermit() < 1) {
             this.mnAdmin.setEnabled(false);
             this.mnEmployee.setEnabled(false);
+        } else {
+            this.mnAdmin.setEnabled(true);
+            this.mnEmployee.setEnabled(true);
         }
     }
     
@@ -425,7 +434,6 @@ public class MainFrm extends javax.swing.JFrame {
             this.setActiveUser(null);
             this.resetWindow();
             this.setExtendedState(0);
-            this.pack();
         }
     }//GEN-LAST:event_mnLogoutActionPerformed
 
