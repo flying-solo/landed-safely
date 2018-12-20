@@ -3,7 +3,7 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.entities;
+package lds.lib.Entities;
 
 
 public class Employee {

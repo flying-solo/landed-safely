@@ -2,11 +2,11 @@
  *  * @author kaboel
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
-package lds.frames;
+package lds.lib.Frames;
 
 import javax.swing.JOptionPane;
-import lds.entities.Employee;
-import lds.lib.EmpController;
+import lds.lib.Entities.Employee;
+import lds.lib.Controllers.EmpController;
 import lds.main.MainFrm;
 
 /**

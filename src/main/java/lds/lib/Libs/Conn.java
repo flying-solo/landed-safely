@@ -3,7 +3,7 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.lib;
+package lds.lib.Libs;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -3,7 +3,7 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.lib;
+package lds.lib.Controllers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import lds.dao.EmpDAO;
-import lds.entities.Employee;
+import lds.lib.DAO.EmpDAO;
+import lds.lib.Entities.Employee;
+import lds.lib.Libs.Conn;
 
 
 public class EmpController implements EmpDAO {

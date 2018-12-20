@@ -2,10 +2,10 @@
  *  * @author kaboel
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
-package lds.dao;
+package lds.lib.DAO;
 
 import java.util.ArrayList;
-import lds.entities.Employee;
+import lds.lib.Entities.Employee;
 
 public interface EmpDAO {
     ArrayList<Employee> getAllEmp();

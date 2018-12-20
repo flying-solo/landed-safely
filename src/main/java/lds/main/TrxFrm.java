@@ -5,7 +5,7 @@
 package lds.main;
 
 import javax.swing.JDialog;
-import lds.frames.AddTrxFrm;
+import lds.lib.Frames.AddTrxFrm;
 
 
 /**

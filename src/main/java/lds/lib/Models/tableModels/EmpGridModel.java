@@ -3,10 +3,10 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.models;
+package lds.lib.Models.tableModels;
 
 import java.util.ArrayList;
-import lds.entities.Employee;
+import lds.lib.Entities.Employee;
 import javax.swing.table.AbstractTableModel;
 
 

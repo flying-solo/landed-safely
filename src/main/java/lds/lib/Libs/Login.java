@@ -3,9 +3,9 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.lib;
+package lds.lib.Libs;
 
-import lds.entities.Admin;
+import lds.lib.Entities.Admin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

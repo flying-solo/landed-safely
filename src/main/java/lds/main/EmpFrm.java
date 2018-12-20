@@ -8,10 +8,10 @@ import java.awt.event.ItemEvent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import lds.frames.AddEmpFrm;
-import lds.lib.EmpController;
-import lds.lib.PrintPDF;
-import lds.models.EmpGridModel;
+import lds.lib.Frames.AddEmpFrm;
+import lds.lib.Controllers.EmpController;
+import lds.lib.Libs.Print;
+import lds.lib.Models.tableModels.EmpGridModel;
 
 /**
  *
@@ -24,7 +24,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     private final EmpController controller;
     
     private JDialog dialog;
-    private PrintPDF pdf;
+    private Print pdf;
     
     public EmpFrm() {
         this.controller = new EmpController();
@@ -115,6 +115,11 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         btnPrntXls.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnPrntXls.setText("Print .xls");
         btnPrntXls.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnPrntXls.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrntXlsActionPerformed(evt);
+            }
+        });
 
         btnAdd.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnAdd.setText("+ Add New");
@@ -448,13 +453,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeleteRowActionPerformed
 
     private void btnPrntPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntPdfActionPerformed
-        this.pdf = new PrintPDF(empDataGrid, "Employees");
-        StringBuilder sb = new StringBuilder();
-        sb.append("PDF exported to home/Documents/ ");
-        String ttl = "LDS : Information";
-        int type = JOptionPane.INFORMATION_MESSAGE;
-        this.main.userDialog(sb, ttl, type);
-        this.pdf.print();
+        this.pdf = new Print("Employees");
+        this.pdf.printPDF(this.empDataGrid);
     }//GEN-LAST:event_btnPrntPdfActionPerformed
 
     private void btnChangePosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePosActionPerformed
@@ -481,6 +481,11 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         }
         this.main.userDialog(sb, ttl, type);
     }//GEN-LAST:event_btnChangePosActionPerformed
+
+    private void btnPrntXlsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntXlsActionPerformed
+        this.pdf = new Print("Employees");
+        this.pdf.printXLS(this.empDataGrid);
+    }//GEN-LAST:event_btnPrntXlsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
