@@ -127,11 +127,11 @@ public class AreaController implements AreaDAO {
             Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("INSERT INTO m_area VALUES (?, ?, ?, ?, ?, ?)");
             st.setString(1, area.getId());
-            st.setInt(0, prov.getId());
-            st.setInt(2, cir.getId());
-            st.setInt(3, dis.getId());
-            st.setString(4, area.getSubDistrict());
-            st.setString(5, area.getPostalCode());
+            st.setInt(2, prov.getId());
+            st.setInt(3, cir.getId());
+            st.setInt(4, dis.getId());
+            st.setString(5, area.getSubDistrict());
+            st.setString(6, area.getPostalCode());
             int i = st.executeUpdate();
             if(i == 1) {
                 return true;

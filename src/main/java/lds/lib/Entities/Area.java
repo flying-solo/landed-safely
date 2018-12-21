@@ -48,4 +48,30 @@ public class Area {
     public String getPostalCode() {
         return postalCode;
     } 
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public void setCityregency(String cityregency) {
+        this.cityregency = cityregency;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public void setSubDistrict(String subDistrict) {
+        this.subDistrict = subDistrict;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+    
+    
 }

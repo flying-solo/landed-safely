@@ -465,7 +465,8 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_mnEmployeeActionPerformed
 
     private void mnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAdminActionPerformed
-//        this.enaAdmPanel();
+        AdminFrm frm = new AdminFrm();
+        this.setActiveFrame(frm);
     }//GEN-LAST:event_mnAdminActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed

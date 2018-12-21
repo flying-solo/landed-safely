@@ -23,6 +23,15 @@ public class CityRegency {
         return cityregency;
     }
     
+    public int getType() {
+        if(this.cityregency.contains("KOTA")) {
+            return 1;
+        } else if(this.cityregency.contains("KABUPATEN")) {
+            return 2;
+        }
+        return 0;
+    }
+    
     @Override
     public String toString() {
         return this.cityregency;

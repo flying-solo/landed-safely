@@ -4,24 +4,63 @@
  */
 package lds.lib.Frames;
 
+import java.util.Random;
+import javax.swing.JOptionPane;
+import lds.lib.Controllers.AreaController;
+import lds.lib.Controllers.CirController;
+import lds.lib.Controllers.DisController;
+import lds.lib.Controllers.ProvController;
+import lds.lib.Entities.Area;
 import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 import lds.lib.Entities.Province;
+import lds.main.MainFrm;
 
 /**
  *
  * @author kaboel
  */
 public class AddAreaFrm extends javax.swing.JDialog {
-
-    /**
-     * Creates new form AddAreaFrm
-     */
+    
+    private final MainFrm main;
+    private final AreaController areacon;
+    private final ProvController provcon;
+    private final CirController circon;
+    private final DisController discon;
+    
+    
     public AddAreaFrm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        
+        this.main = new MainFrm();
+        this.areacon = new AreaController();
+        this.provcon = new ProvController();
+        this.circon = new CirController();
+        this.discon = new DisController();
+        
         initComponents();
+    
+        loadCombos();
     }
-
+    
+    private void loadCombos() {
+        this.provcon.getAllProv().forEach((prov) -> {
+            this.comboProv.addItem(prov);
+        });
+        this.circon.getAllCir().forEach((cir) -> {
+            this.comboCir.addItem(cir);
+        });
+        this.discon.getAllDis().forEach((dis) -> {
+            this.comboDis.addItem(dis);
+        });
+    }
+    
+    private boolean isEmpty() {
+        return this.txtPos.getText() == null || this.txtPos.getText().equals("")
+                && this.txtSub.getText() == null || this.txtSub.getText().equals("");
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,11 +196,60 @@ public class AddAreaFrm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
+        this.txtPos.setText("");
+        this.txtSub.setText("");
+        this.comboCir.setSelectedIndex(0);
+        this.comboDis.setSelectedIndex(0);
+        this.comboProv.setSelectedIndex(0);
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder();
+        String ttl;
+        int type;
+        if(!isEmpty()) {
+            Province prov = (Province) this.comboProv.getSelectedItem();
+            CityRegency cir = (CityRegency) this.comboCir.getSelectedItem();
+            District dis = (District) this.comboDis.getSelectedItem();
+            
+            Random random = new Random();
+            int rand = random.nextInt((99 - 01) + 1) + 01;
+            String id = String.format("AR"+"%02d"+"%04d"+"%04d"+rand, 
+                prov.getId(),
+                cir.getId(),
+                dis.getId()
+            ); 
+            Area area = new Area(
+                id,
+                prov.getProvince(),
+                cir.getCityregency(),
+                dis.getDistrict(),
+                this.txtSub.getText(),
+                this.txtPos.getText()
+            );
+            
+            System.out.println(id);
+            
+            if(this.areacon.insertArea(
+                    area,
+                    prov,
+                    cir,
+                dis)) {
+                sb.append("New data saved !");
+                ttl = "LDS : Information";
+                type = JOptionPane.INFORMATION_MESSAGE;
+                this.dispose();
+            } else {
+                sb.append("Unable to save data.");
+                ttl = "LDS : Error";
+                type = JOptionPane.ERROR_MESSAGE;
+            }
+        } else {
+            sb.append("Fields with * marker cannot be empty.");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+        }
+        this.main.userDialog(sb, ttl, type);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
