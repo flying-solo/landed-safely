@@ -12,30 +12,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import lds.lib.Entities.Area;
 import lds.lib.DAO.AreaDAO;
-import lds.lib.Entities.CityRegion;
+import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 import lds.lib.Entities.Province;
 import lds.lib.Libs.Conn;
 
 
 public class AreaController implements AreaDAO {
-    private final ProvController provC;
-    private final CirController cirC;
-    private final DisController disC;
-
-    public AreaController() {
-        this.provC = new ProvController();
-        this.cirC = new CirController();
-        this.disC = new DisController();
-    }
     
     private Area extractResult(ResultSet rs) {
         try {
             Area area = new Area(
                 rs.getString("id_area"),
-                provC.getProvById(rs.getInt("id_province")),
-                cirC.getCirById(rs.getInt("id_cityregion")),
-                disC.getDisById(rs.getInt("id_district")),
+                rs.getString("province_name"),
+                rs.getString("cityregency_name"),
+                rs.getString("district_name"),
                 rs.getString("sub_district"),
                 rs.getString("postal_code")
             );
@@ -51,7 +42,26 @@ public class AreaController implements AreaDAO {
         ArrayList<Area> result = new ArrayList<>();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_area");
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    A.id_area, " +
+                "    P.province_name, " +
+                "    C.cityregency_name, " +
+                "    D.district_name, " +
+                "    A.sub_district, " +
+                "    A.postal_code " +
+                "FROM " +
+                "    m_area AS A " +
+                "LEFT JOIN m_province AS P " +
+                "ON " +
+                "    A.id_province = P.id_province " +
+                "LEFT JOIN m_cityregency AS C " +
+                "ON " +
+                "    A.id_cityregency = C.id_cityregency " +
+                "LEFT JOIN m_district AS D " +
+                "ON " +
+                "    A.id_district = D.id_district"
+            );
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
                 Area area = this.extractResult(rs);
@@ -65,12 +75,40 @@ public class AreaController implements AreaDAO {
     }
 
     @Override
-    public ArrayList<Area> getAreaByProvince(Province prov) {
+    public ArrayList<Area> getAreaByParam(Province prov, CityRegency cir, District dis) {
+        int idprov = prov.getId();
+        int idcir = cir.getId();
+        int iddis = dis.getId();
+        
         ArrayList<Area> result = new ArrayList<>();
+        
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_area WHERE id_province = ?");
-            st.setInt(1, prov.getId());
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    A.id_area, " +
+                "    P.province_name, " +
+                "    C.cityregency_name, " +
+                "    D.district_name, " +
+                "    A.sub_district, " +
+                "    A.postal_code " +
+                "FROM " +
+                "    m_area AS A " +
+                "LEFT JOIN m_province AS P " +
+                "ON " +
+                "    A.id_province = P.id_province " +
+                "LEFT JOIN m_cityregency AS C " +
+                "ON " +
+                "    A.id_cityregency = C.id_cityregency " +
+                "LEFT JOIN m_district AS D " +
+                "ON " +
+                "    A.id_district = D.id_district " +
+                "WHERE " +
+                "    A.id_province = ? AND A.id_cityregency = ? AND A.id_district = ?"
+            );
+            st.setInt(1, idprov);
+            st.setInt(2, idcir);
+            st.setInt(3, iddis);
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
                 Area area = this.extractResult(rs);
@@ -84,54 +122,16 @@ public class AreaController implements AreaDAO {
     }
 
     @Override
-    public ArrayList<Area> getAreaByCityRegion(CityRegion cir) {
-        ArrayList<Area> result = new ArrayList<>();
-        try {
-            Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_area WHERE id_province = ?");
-            st.setInt(1, cir.getId());
-            ResultSet rs = st.executeQuery();
-            while(rs.next()) {
-                Area area = this.extractResult(rs);
-                result.add(area);
-            }
-            return result;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public ArrayList<Area> getAreaByDistrict(District dis) {
-        ArrayList<Area> result = new ArrayList<>();
-        try {
-            Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_area WHERE id_province = ?");
-            st.setInt(1, dis.getId());
-            ResultSet rs = st.executeQuery();
-            while(rs.next()) {
-                Area area = this.extractResult(rs);
-                result.add(area);
-            }
-            return result;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public boolean insertArea(Area area) {
+    public boolean insertArea(Area area, Province prov, CityRegency cir, District dis) {
         try {
             Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("INSERT INTO m_area VALUES (?, ?, ?, ?, ?, ?)");
             st.setString(1, area.getId());
-            st.setInt(2, area.getProvince().getId());
-            st.setInt(3, area.getCityregion().getId());
-            st.setInt(4, area.getDistrict().getId());
-            st.setString(5, area.getSubDistrict());
-            st.setString(6, area.getPostalCode());
+            st.setInt(0, prov.getId());
+            st.setInt(2, cir.getId());
+            st.setInt(3, dis.getId());
+            st.setString(4, area.getSubDistrict());
+            st.setString(5, area.getPostalCode());
             int i = st.executeUpdate();
             if(i == 1) {
                 return true;
