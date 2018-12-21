@@ -124,7 +124,7 @@ public class MainFrm extends javax.swing.JFrame {
             (contSize.width - frameSize.width)/2,
             (contSize.height- frameSize.height)/2
         );
-        activeFrame.show();
+        activeFrame.setVisible(true);
     }
     
 
@@ -164,7 +164,7 @@ public class MainFrm extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         mnTrx = new javax.swing.JMenuItem();
         mnFleet = new javax.swing.JMenuItem();
-        mnRegion = new javax.swing.JMenuItem();
+        mnArea = new javax.swing.JMenuItem();
         mnPrice = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnEmployee = new javax.swing.JMenuItem();
@@ -369,14 +369,14 @@ public class MainFrm extends javax.swing.JFrame {
         });
         jMenu2.add(mnFleet);
 
-        mnRegion.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
-        mnRegion.setText("Region");
-        mnRegion.addActionListener(new java.awt.event.ActionListener() {
+        mnArea.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
+        mnArea.setText("Area");
+        mnArea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnRegionActionPerformed(evt);
+                mnAreaActionPerformed(evt);
             }
         });
-        jMenu2.add(mnRegion);
+        jMenu2.add(mnArea);
 
         mnPrice.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         mnPrice.setText("Price");
@@ -446,9 +446,14 @@ public class MainFrm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mnFleetActionPerformed
 
-    private void mnRegionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRegionActionPerformed
-//        this.enaCovPanel();
-    }//GEN-LAST:event_mnRegionActionPerformed
+    private void mnAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAreaActionPerformed
+        try {
+            AreaFrm frm = new AreaFrm();
+            this.setActiveFrame(frm);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }//GEN-LAST:event_mnAreaActionPerformed
 
     private void mnPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPriceActionPerformed
 //        this.enaPrcPanel();
@@ -544,11 +549,11 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel labelLogin;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mnAdmin;
+    private javax.swing.JMenuItem mnArea;
     private javax.swing.JMenuItem mnEmployee;
     private javax.swing.JMenuItem mnFleet;
     private javax.swing.JMenuItem mnLogout;
     private javax.swing.JMenuItem mnPrice;
-    private javax.swing.JMenuItem mnRegion;
     private javax.swing.JMenuItem mnTrx;
     private javax.swing.JMenuItem mnUpdPass;
     private javax.swing.JMenuItem mnUpdProf;
