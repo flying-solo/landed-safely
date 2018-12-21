@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import lds.lib.DAO.DistrictDAO;
+import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 import lds.lib.Libs.Conn;
 
@@ -21,7 +22,7 @@ public class DisController implements DistrictDAO {
         try {
             District dis = new District(
                 rs.getInt("id_district"), 
-                rs.getString("district")
+                rs.getString("district_name")
             );
             return dis;
         } catch (Exception e) {
@@ -49,20 +50,11 @@ public class DisController implements DistrictDAO {
     }
 
     @Override
-    public District getDisById(int id) {
-        try {
-            Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_district WHERE id_district = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()) {
-                return this.extractResult(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
+    public ArrayList<District> getDisByCir(CityRegency cir) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+
     
     
 }
