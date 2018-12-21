@@ -27,6 +27,5 @@ public class Province {
     public String toString() {
         return this.province;
     }
-    
-    
+      
 }
