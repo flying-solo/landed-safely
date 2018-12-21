@@ -8,18 +8,18 @@ package lds.lib.Entities;
 
 public class Area {
     private String id;
-    private Province province;
-    private CityRegion cityregion;
-    private District district;
+    private String province;
+    private String cityregency;
+    private String district;
     private String subDistrict;
     private String postalCode;
 
     public Area() {}
-    
-    public Area(String id, Province province, CityRegion cityregion, District district, String subDistrict, String postalCode) {
+
+    public Area(String id, String province, String cityregency, String district, String subDistrict, String postalCode) {
         this.id = id;
         this.province = province;
-        this.cityregion = cityregion;
+        this.cityregency = cityregency;
         this.district = district;
         this.subDistrict = subDistrict;
         this.postalCode = postalCode;
@@ -29,15 +29,15 @@ public class Area {
         return id;
     }
 
-    public Province getProvince() {
+    public String getProvince() {
         return province;
     }
 
-    public CityRegion getCityregion() {
-        return cityregion;
+    public String getCityregency() {
+        return cityregency;
     }
 
-    public District getDistrict() {
+    public String getDistrict() {
         return district;
     }
 
@@ -47,32 +47,5 @@ public class Area {
 
     public String getPostalCode() {
         return postalCode;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
-
-    public void setCityregion(CityRegion cityregion) {
-        this.cityregion = cityregion;
-    }
-
-    public void setDistrict(District district) {
-        this.district = district;
-    }
-
-    public void setSubDistrict(String subDistrict) {
-        this.subDistrict = subDistrict;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    
-    
+    } 
 }
