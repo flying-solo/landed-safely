@@ -7,7 +7,7 @@ package lds.lib.DAO;
 import java.util.ArrayList;
 import lds.lib.Entities.Area;
 import lds.lib.Entities.Province;
-import lds.lib.Entities.CityRegion;
+import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 
 /**
@@ -16,9 +16,7 @@ import lds.lib.Entities.District;
  */
 public interface AreaDAO {
     ArrayList<Area> getAllArea();
-    ArrayList<Area> getAreaByProvince(Province prov);
-    ArrayList<Area> getAreaByCityRegion(CityRegion cir);
-    ArrayList<Area> getAreaByDistrict(District dis);
-    boolean insertArea(Area area);
+    ArrayList<Area> getAreaByParam(Province prov, CityRegency cir, District dis);
+    boolean insertArea(Area area, Province prov, CityRegency cir, District dis);
     boolean deleteArea(String id);
 }
