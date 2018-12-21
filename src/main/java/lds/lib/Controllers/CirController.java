@@ -10,18 +10,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import lds.lib.DAO.CityRegionDAO;
-import lds.lib.Entities.CityRegion;
+import lds.lib.Entities.CityRegency;
 import lds.lib.Libs.Conn;
+import lds.lib.DAO.CityRegencyDAO;
+import lds.lib.Entities.Province;
 
 
-public class CirController implements CityRegionDAO {
+public class CirController implements CityRegencyDAO {
     
-    private CityRegion extractResult(ResultSet rs) {
+    private CityRegency extractResult(ResultSet rs) {
         try {
-            CityRegion cir = new CityRegion(
-                rs.getInt("id_cityregion"),
-                rs.getString("cityregion")
+            CityRegency cir = new CityRegency(
+                rs.getInt("id_cityregency"),
+                rs.getString("cityregency_name")
             );
             return cir;
         } catch (SQLException e) {
@@ -32,14 +33,14 @@ public class CirController implements CityRegionDAO {
     }
     
     @Override
-    public ArrayList<CityRegion> getAllCir() {
-        ArrayList<CityRegion> result = new ArrayList<>();
+    public ArrayList<CityRegency> getAllCir() {
+        ArrayList<CityRegency> result = new ArrayList<>();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_cityregion");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM m_cityregency");
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
-                CityRegion cir = this.extractResult(rs);
+                CityRegency cir = this.extractResult(rs);
                 result.add(cir);
             }
             return result;
@@ -50,19 +51,39 @@ public class CirController implements CityRegionDAO {
     }
 
     @Override
-    public CityRegion getCirById(int id) {
+    public ArrayList<CityRegency> getCirByProv(Province prov) {
+        ArrayList<CityRegency> result = new ArrayList<>();
+        int idprov = prov.getId();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM m_cityregion WHERE id_cityregion = ?");
-            st.setInt(1, id);
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    C.id_cityregency, " +
+                "    C.cityregency_name, " +
+                "    COUNT(*) AS COUNT " +
+                "FROM " +
+                "    m_area AS A " +
+                "INNER JOIN m_cityregency AS C " +
+                "ON " +
+                "    A.id_cityregency = C.id_cityregency " +
+                "WHERE " +
+                "    A.id_province = ? " +
+                "HAVING " +
+                "    COUNT > 1"
+            );
+            st.setInt(1, idprov);
             ResultSet rs = st.executeQuery();
-            if(rs.next()) {
-                return this.extractResult(rs);
+            while(rs.next()) {
+                CityRegency cir = this.extractResult(rs);
+                result.add(cir);
             }
+            return result;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return null;
     }
+
+
     
 }
