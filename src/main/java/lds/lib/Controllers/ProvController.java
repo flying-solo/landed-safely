@@ -21,7 +21,7 @@ public class ProvController implements ProvinceDAO {
         try {
             Province prov = new Province(
                 rs.getInt("id_province"),
-                rs.getString("province")
+                rs.getString("province_name")
             );
             return prov;
         } catch (SQLException e) {
