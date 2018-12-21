@@ -7,7 +7,6 @@ package lds.main;
 import java.awt.event.ItemEvent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import lds.lib.Frames.AddEmpFrm;
 import lds.lib.Controllers.EmpController;
 import lds.lib.Libs.Print;
@@ -24,7 +23,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     private final EmpController controller;
     
     private JDialog dialog;
-    private Print pdf;
+    private Print print;
     
     public EmpFrm() {
         this.controller = new EmpController();
@@ -33,11 +32,6 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         initComponents();
         
         this.setDataNotif(this.gridModel.getRowCount());
-    }
-    
-    private int[] selectedRows() {
-        int i[] = this.empDataGrid.getSelectedRows();
-        return i;
     }
     
     private boolean isCleared() {
@@ -206,7 +200,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(dataNotif, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                        .addComponent(dataNotif, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -306,7 +300,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                             .addComponent(radName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(radPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(radStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 477, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator1)
         );
@@ -453,8 +447,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeleteRowActionPerformed
 
     private void btnPrntPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntPdfActionPerformed
-        this.pdf = new Print("Employees");
-        this.pdf.printPDF(this.empDataGrid);
+        this.print = new Print("Employees");
+        this.print.printPDF(this.empDataGrid);
     }//GEN-LAST:event_btnPrntPdfActionPerformed
 
     private void btnChangePosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePosActionPerformed
@@ -483,8 +477,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnChangePosActionPerformed
 
     private void btnPrntXlsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntXlsActionPerformed
-        this.pdf = new Print("Employees");
-        this.pdf.printXLS(this.empDataGrid);
+        this.print = new Print("Employees");
+        this.print.printXLS(this.empDataGrid);
     }//GEN-LAST:event_btnPrntXlsActionPerformed
 
 
