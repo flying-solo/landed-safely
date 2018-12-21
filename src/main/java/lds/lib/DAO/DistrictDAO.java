@@ -5,6 +5,7 @@
 package lds.lib.DAO;
 
 import java.util.ArrayList;
+import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 
 /**
@@ -13,5 +14,5 @@ import lds.lib.Entities.District;
  */
 public interface DistrictDAO {
     ArrayList<District> getAllDis();
-    District getDisById(int id);
+    ArrayList<District> getDisByCir(CityRegency cir);
 }
