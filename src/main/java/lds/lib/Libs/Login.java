@@ -28,7 +28,7 @@ public class Login {
         try {
             admin = new Admin(
                 rs.getInt("id_admin"),
-                rs.getInt("id_employee"),
+                rs.getString("name"),
                 rs.getString("username"),
                 rs.getString("password"),
                 rs.getString("date_reg"),
@@ -44,7 +44,22 @@ public class Login {
         Admin result = null;
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("select * from t_admin where username = ? and password = ?");
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    A.id_admin, " +
+                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
+                "    A.username, " +
+                "    A.password, " +
+                "    A.date_reg, " +
+                "    A.permit " +
+                "FROM " +
+                "    t_admin AS A " +
+                "LEFT JOIN t_employee AS E " +
+                "ON " +
+                "    A.id_employee = E.id_employee " +
+                "WHERE " +
+                "    A.username = ? AND A.password = ?"
+            );
             st.setString(1, username);
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
