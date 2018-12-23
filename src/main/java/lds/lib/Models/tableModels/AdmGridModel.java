@@ -12,7 +12,7 @@ import lds.lib.Entities.Admin;
 
 public class AdmGridModel extends AbstractTableModel {
     private final String[] columns;
-    private final ArrayList<Admin> data;
+    private ArrayList<Admin> data;
 
     public AdmGridModel(ArrayList<Admin> data) {
         this.columns = new String[] {
@@ -21,22 +21,51 @@ public class AdmGridModel extends AbstractTableModel {
         this.data = data;
     }
     
+    public void setData(ArrayList<Admin> data) {
+        this.data = data;
+    }
+    
     @Override
     public int getColumnCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.columns.length;
     }
     
     @Override
     public int getRowCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.data.size();
     }
 
     @Override
-    public Object getValueAt(int i, int i1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object getValueAt(int row, int col) {
+        String permit;
+        if(this.data.get(row).getPermit() == 1) {
+            permit = "Superuser";
+        } else {
+            permit = "Administrator";
+        }
+        
+        Object tmp = null;
+        switch(col) {
+            case 0: tmp = this.data.get(row).getUsername(); break;
+            case 1: tmp = this.data.get(row).getEmployee(); break;
+            case 2: tmp = this.data.get(row).getDate_reg(); break;
+            case 3: tmp = permit; break;
+            case 4: tmp = this.data.get(row).getId_admin(); break;
+        }
+        return tmp;
     }
-    
-    
-    
-    
+
+    @Override
+    public String getColumnName(int col) {
+        return this.columns[col];
+    }
+
+    @Override
+    public Class<?> getColumnClass(int col) {
+        if(col == 4) {
+            return Integer.class;
+        }
+        return String.class;
+    }
+        
 }
