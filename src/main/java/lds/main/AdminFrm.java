@@ -241,7 +241,7 @@ public class AdminFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPrntXLSActionPerformed
 
     private void btnPrntPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntPDFActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnPrntPDFActionPerformed
 
     private void btnChangePermitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePermitActionPerformed
