@@ -16,6 +16,7 @@ import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 import lds.lib.Entities.Province;
 import lds.lib.Frames.AddAreaFrm;
+import lds.lib.Frames.UpdAreaFrm;
 import lds.lib.Libs.Print;
 import lds.lib.Models.tableModels.AreaGridModel;
 
@@ -391,7 +392,19 @@ public class AreaFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeleteSelActionPerformed
 
     private void btnChangeStatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeStatActionPerformed
-        // TODO add your handling code here:
+        if(this.areaDataGrid.getSelectedRow()<0) {
+            StringBuilder sb = new StringBuilder();
+            String ttl;
+            int type;
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+            this.main.userDialog(sb, ttl, type);
+        } else {
+            UpdAreaFrm frm = new UpdAreaFrm(this.main, true, this.getSelectedId());
+            this.setDialog(frm);
+            this.btnFilterActionPerformed(evt);
+        }
     }//GEN-LAST:event_btnChangeStatActionPerformed
 
     private void checkBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxItemStateChanged
