@@ -223,11 +223,11 @@ public class AddEmpFrm extends javax.swing.JDialog {
     }
     
     private boolean isEmpty() {
-        return  this.txtLast.getText() == null  || this.txtLast.getText().equals("") &&
-                this.txtFirst.getText() == null || this.txtLast.getText().equals("") &&
-                this.txtEmail.getText() == null || this.txtEmail.getText().equals("") &&
-                this.txtAddr.getText() == null || this.txtEmail.getText().equals("") &&
-                this.txtPhone.getText() == null || this.txtPhone.getText().equals("") &&
+        return  this.txtLast.getText() == null  || this.txtLast.getText().equals("") ||
+                this.txtFirst.getText() == null || this.txtLast.getText().equals("") ||
+                this.txtEmail.getText() == null || this.txtEmail.getText().equals("") ||
+                this.txtAddr.getText() == null || this.txtEmail.getText().equals("") ||
+                this.txtPhone.getText() == null || this.txtPhone.getText().equals("") ||
                 this.radGroup.getSelection() == null;
     }
     
