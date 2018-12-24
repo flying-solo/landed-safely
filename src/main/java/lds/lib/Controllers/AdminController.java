@@ -23,6 +23,7 @@ public class AdminController implements AdminDAO {
                 rs.getString("name"),
                 rs.getString("username"),
                 rs.getString("password"),
+                rs.getString("salt_value"),
                 rs.getString("date_reg"),
                 rs.getInt("permit")
             );
@@ -44,6 +45,7 @@ public class AdminController implements AdminDAO {
                 "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
                 "    A.username, " +
                 "    A.password, " +
+                "    A.salt_value, " + 
                 "    A.date_reg, " +
                 "    A.permit " +
                 "FROM " +
@@ -75,14 +77,14 @@ public class AdminController implements AdminDAO {
                 "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
                 "    A.username, " +
                 "    A.password, " +
+                "    A.salt_value, " + 
                 "    A.date_reg, " +
                 "    A.permit " +
                 "FROM " +
                 "    t_admin AS A " +
                 "LEFT JOIN t_employee AS E " +
                 "ON " +
-                "    A.id_employee = E.id_employee " +
-                "WHERE A.permit = ?"
+                "    A.id_employee = E.id_employee"
             );
             st.setInt(1, permit);
             ResultSet rs = st.executeQuery();
@@ -141,37 +143,6 @@ public class AdminController implements AdminDAO {
     }
 
     @Override
-    public Admin getAdmByIdPass(int id, String pass) {
-        try {
-            Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "    A.id_admin, " +
-                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
-                "    A.username, " +
-                "    A.password, " +
-                "    A.date_reg, " +
-                "    A.permit " +
-                "FROM " +
-                "    t_admin AS A " +
-                "LEFT JOIN t_employee AS E " +
-                "ON " +
-                "    A.id_employee = E.id_employee " +
-                "WHERE A.id_admin = ? AND A.password = ?"
-            );
-            st.setInt(1, id);
-            st.setString(2, pass);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()) {
-                return this.extractResult(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
     public boolean changePass(int id, String pass) {
         try {
             Connection con = Conn.initConn();
@@ -193,6 +164,36 @@ public class AdminController implements AdminDAO {
     @Override
     public boolean insertAdmin(Admin admin) {
         return false;
+    }
+
+    @Override
+    public Admin getAdmByUsername(String username) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    A.id_admin, " +
+                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
+                "    A.username, " +
+                "    A.password, " +
+                "    A.salt_value, " + 
+                "    A.date_reg, " +
+                "    A.permit " +
+                "FROM " +
+                "    t_admin AS A " +
+                "LEFT JOIN t_employee AS E " +
+                "ON " +
+                "    A.id_employee = E.id_employee " +
+                "WHERE A.username = ?"
+            );
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return this.extractResult(rs);
+            }
+        } catch (SQLException e) {
+        }
+        return null;
     }
 
 }
