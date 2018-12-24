@@ -249,23 +249,20 @@ public class MainFrm extends javax.swing.JFrame {
         childPanel0Layout.setHorizontalGroup(
             childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(childPanel0Layout.createSequentialGroup()
-                .addGroup(childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(childPanel0Layout.createSequentialGroup()
-                        .addGap(329, 329, 329)
-                        .addComponent(labelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(childPanel0Layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(175, 175, 175)
+                .addGroup(childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
         childPanel0Layout.setVerticalGroup(
             childPanel0Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(childPanel0Layout.createSequentialGroup()
                 .addGap(85, 85, 85)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelLogin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         parentPanel.add(childPanel0, "card2");
