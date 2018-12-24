@@ -14,7 +14,6 @@ import lds.lib.DAO.AdminDAO;
 import lds.lib.Entities.Admin;
 import lds.lib.Libs.Conn;
 
-
 public class AdminController implements AdminDAO {
 
     private Admin extractResult(ResultSet rs) {
@@ -124,11 +123,6 @@ public class AdminController implements AdminDAO {
     }
 
     @Override
-    public boolean updateAdmin(int id) {
-        return false;
-    }
-
-    @Override
     public boolean deleteAdmin(int id) {
         try {
             Connection con = Conn.initConn();
@@ -140,9 +134,64 @@ public class AdminController implements AdminDAO {
             if(i == 1) {
                 return true;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+        return false;
+    }
+
+    @Override
+    public Admin getAdmByIdPass(int id, String pass) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    A.id_admin, " +
+                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
+                "    A.username, " +
+                "    A.password, " +
+                "    A.date_reg, " +
+                "    A.permit " +
+                "FROM " +
+                "    t_admin AS A " +
+                "LEFT JOIN t_employee AS E " +
+                "ON " +
+                "    A.id_employee = E.id_employee " +
+                "WHERE A.id_admin = ? AND A.password = ?"
+            );
+            st.setInt(1, id);
+            st.setString(2, pass);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return this.extractResult(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public boolean changePass(int id, String pass) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement(
+                "UPDATE t_admin SET password = ? WHERE id_admin = ?"
+            );
+            st.setString(1, pass);
+            st.setInt(2, id);
+            int i = st.executeUpdate();
+            if(i == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean insertAdmin(Admin admin) {
         return false;
     }
 
