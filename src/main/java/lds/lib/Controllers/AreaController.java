@@ -120,6 +120,66 @@ public class AreaController implements AreaDAO {
         }
         return null;
     }
+    
+    @Override
+    public Area getAreaById(String id) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "    A.id_area, " +
+                "    P.province_name, " +
+                "    C.cityregency_name, " +
+                "    D.district_name, " +
+                "    A.sub_district, " +
+                "    A.postal_code " +
+                "FROM " +
+                "    m_area AS A " +
+                "LEFT JOIN m_province AS P " +
+                "ON " +
+                "    A.id_province = P.id_province " +
+                "LEFT JOIN m_cityregency AS C " +
+                "ON " +
+                "    A.id_cityregency = C.id_cityregency " +
+                "LEFT JOIN m_district AS D " +
+                "ON " +
+                "    A.id_district = D.id_district " +
+                "WHERE A.id_area = ?"
+            );
+            st.setString(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return this.extractResult(rs);
+                
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateArea(Area area) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement(
+                "UPDATE m_area SET " +
+                    "sub_district = ? , " +
+                    "postal_code = ? " +
+                "WHERE id_area = ?"
+            );
+            st.setString(1, area.getSubDistrict());
+            st.setString(2, area.getPostalCode());
+            st.setString(3, area.getId());
+            int i = st.executeUpdate();
+            if(i == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
 
     @Override
     public boolean insertArea(Area area, Province prov, CityRegency cir, District dis) {
@@ -157,4 +217,5 @@ public class AreaController implements AreaDAO {
         }
         return false;
     }
+
 }
