@@ -17,6 +17,8 @@ import lds.lib.Entities.District;
 public interface AreaDAO {
     ArrayList<Area> getAllArea();
     ArrayList<Area> getAreaByParam(Province prov, CityRegency cir, District dis);
+    Area getAreaById(String id);
+    boolean updateArea(Area area);
     boolean insertArea(Area area, Province prov, CityRegency cir, District dis);
     boolean deleteArea(String id);
 }
