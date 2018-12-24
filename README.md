@@ -1,11 +1,10 @@
 # landed-safely
+A Logistic company administrator software, built for college final exam.
 
-database name is 'lds'.
+- Login info :
+    > Username : kaboel
+    > Password : kaboel
 
-the .sql file is in resources package.
-
-
-Login info :
-
-Username : kaboel
-Password : kaboel
+- Database info :
+    > The database name is `lds`
+    > The database `.sql` file is located in the resources package
