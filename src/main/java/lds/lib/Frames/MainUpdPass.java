@@ -4,7 +4,13 @@
  */
 package lds.lib.Frames;
 
+import java.awt.Color;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
+import lds.lib.Controllers.AdminController;
 import lds.lib.Entities.Admin;
+import lds.lib.Libs.Encryption;
+import lds.main.MainFrm;
 
 /**
  *
@@ -12,16 +18,40 @@ import lds.lib.Entities.Admin;
  */
 public class MainUpdPass extends javax.swing.JDialog {
 
+    private final MainFrm main;
+    private final AdminController admcon;
     private final Admin admin;
     
     public MainUpdPass(java.awt.Frame parent, boolean modal, Admin admin) {
         super(parent, modal);
-        
+        this.main = new MainFrm();
+        this.admcon = new AdminController();
         this.admin = admin;
         
         initComponents();
     }
-
+    
+    private boolean checkOld() {
+        String old = new String(this.passOld.getPassword());
+        String salt = admin.getSalt();
+        String pass = admin.getPassword();
+        
+        return Encryption.isVerified(old, pass, salt);
+    }
+    
+    private void checkMatch() {
+        if (Arrays.equals(this.passNew.getPassword(), this.passCon.getPassword())) {
+            this.btnSave.setEnabled(true);
+            this.labelNotif.setForeground(Color.GREEN);
+            this.labelNotif.setText("New Password match");
+        } else {
+           this.btnSave.setEnabled(false);
+           this.labelNotif.setForeground(Color.RED);
+           this.labelNotif.setText("New Password did not match");
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,24 +93,48 @@ public class MainUpdPass extends javax.swing.JDialog {
         jLabel4.setText("Confirm New Password *");
 
         passCon.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        passCon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passConKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passConKeyReleased(evt);
+            }
+        });
 
         labelNotif.setFont(new java.awt.Font("Ubuntu", 3, 14)); // NOI18N
         labelNotif.setForeground(new java.awt.Color(255, 0, 0));
         labelNotif.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelNotif.setText("Error");
+        labelNotif.setText(" ");
 
         btnReset.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnReset.setText("Reset");
         btnReset.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         btnSave.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnSave.setText("Save");
         btnSave.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(95, 95, 95)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(95, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -104,16 +158,8 @@ public class MainUpdPass extends javax.swing.JDialog {
                         .addComponent(passOld, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelNotif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(labelNotif, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(95, 95, 95)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,6 +191,50 @@ public class MainUpdPass extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void passConKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passConKeyPressed
+        this.checkMatch();
+    }//GEN-LAST:event_passConKeyPressed
+
+    private void passConKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passConKeyReleased
+        this.checkMatch();
+    }//GEN-LAST:event_passConKeyReleased
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if(checkOld()) {
+            int id = this.admin.getId_admin();
+            String input = new String(this.passCon.getPassword());
+            String newSalt = Encryption.generateSalt();
+            String newPass = Encryption.encryptPass(input, newSalt);
+            
+            
+            StringBuilder sb = new StringBuilder();
+            String ttl;
+            int type;
+            if(this.admcon.changePass(id, newPass, newSalt)) {
+                sb.append("Password Changed !");
+                ttl = "LDS : Information";
+                type = JOptionPane.INFORMATION_MESSAGE;
+                this.main.userDialog(sb, ttl, type);
+                
+                this.dispose();
+            } else {
+                sb.append("Cannot change password.");
+                ttl = "LDS : Error";
+                type = JOptionPane.ERROR_MESSAGE;
+                this.main.userDialog(sb, ttl, type);
+            }
+        } else {
+            this.labelNotif.setText("Old Password invalid");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        this.passOld.setText("");
+        this.passNew.setText("");
+        this.passCon.setText("");
+        this.labelNotif.setText(" ");
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
