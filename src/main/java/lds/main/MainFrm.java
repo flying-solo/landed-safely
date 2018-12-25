@@ -7,10 +7,12 @@ package lds.main;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import lds.lib.Entities.Admin;
+import lds.lib.Frames.MainUpdPass;
 import lds.lib.Libs.Login;
 
 /**
@@ -20,6 +22,7 @@ import lds.lib.Libs.Login;
 public class MainFrm extends javax.swing.JFrame {
     private Admin activeUser;
     private JInternalFrame activeFrame;
+    private JDialog dialog;
     
     /**
      * Creates new form Main
@@ -127,6 +130,13 @@ public class MainFrm extends javax.swing.JFrame {
         activeFrame.setVisible(true);
     }
     
+    private void setDialog(JDialog dialog) {
+        this.dialog = dialog;
+        this.dialog.setLocationRelativeTo(null);
+        this.dialog.setResizable(false);
+        this.dialog.setVisible(true);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -178,6 +188,7 @@ public class MainFrm extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Sign In", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 3, 18), new java.awt.Color(153, 153, 153))); // NOI18N
 
+        txtUser.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtUser.setPreferredSize(new java.awt.Dimension(18, 23));
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
@@ -187,6 +198,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Password");
+
+        txtPass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         btnLogin.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
         btnLogin.setText("Sign In");
@@ -327,10 +340,20 @@ public class MainFrm extends javax.swing.JFrame {
 
         mnUpdProf.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         mnUpdProf.setText("Update Profile");
+        mnUpdProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnUpdProfActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnUpdProf);
 
         mnUpdPass.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         mnUpdPass.setText("Change Password");
+        mnUpdPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnUpdPassActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnUpdPass);
         jMenu1.add(jSeparator2);
 
@@ -471,7 +494,6 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String str;
         String username = this.txtUser.getText();
         String password = new String(this.txtPass.getPassword());
         Login login = new Login(username, password);
@@ -489,6 +511,15 @@ public class MainFrm extends javax.swing.JFrame {
             this.labelLogin.setText("* Fields cannot be empty ! *");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void mnUpdProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUpdProfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnUpdProfActionPerformed
+
+    private void mnUpdPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUpdPassActionPerformed
+        MainUpdPass frm = new MainUpdPass(this, true, this.activeUser);
+        this.setDialog(frm);
+    }//GEN-LAST:event_mnUpdPassActionPerformed
 
     /**
      * @param args the command line arguments
