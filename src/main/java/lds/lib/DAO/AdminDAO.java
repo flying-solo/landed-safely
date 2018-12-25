@@ -17,6 +17,6 @@ public interface AdminDAO {
     Admin getAdmByUsername(String username);
     boolean insertAdmin(Admin admin);
     boolean changePermit(int id, int permit);
-    boolean changePass(int id, String pass);
+    boolean changePass(int id, String pass, String salt);
     boolean deleteAdmin(int id);
 }
