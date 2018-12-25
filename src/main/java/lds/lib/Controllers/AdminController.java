@@ -143,14 +143,18 @@ public class AdminController implements AdminDAO {
     }
 
     @Override
-    public boolean changePass(int id, String pass) {
+    public boolean changePass(int id, String pass, String salt) {
         try {
             Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
-                "UPDATE t_admin SET password = ? WHERE id_admin = ?"
+                "UPDATE t_admin SET " +
+                    "password = ? ," +
+                    "salt_value = ? " +
+                "WHERE id_admin = ?"
             );
             st.setString(1, pass);
-            st.setInt(2, id);
+            st.setString(2, salt);
+            st.setInt(3, id);
             int i = st.executeUpdate();
             if(i == 1) {
                 return true;
