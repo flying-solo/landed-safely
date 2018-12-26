@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import lds.lib.Frames.AddEmpFrm;
 import lds.lib.Controllers.EmpController;
+import lds.lib.Frames.AddAdmFrm;
 import lds.lib.Libs.Print;
 import lds.lib.Models.tableModels.EmpGridModel;
 
@@ -39,7 +40,12 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     }
     
     private String getSelectedId() {
-        String id = this.gridModel.getValueAt(empDataGrid.getSelectedRow(), 7).toString();
+        String id = this.gridModel.getValueAt(empDataGrid.getSelectedRow(), 8).toString();
+        return id;
+    }
+    
+    private String getSelectedAdmin() {
+        String id = this.gridModel.getValueAt(empDataGrid.getSelectedRow(), 9).toString();
         return id;
     }
     
@@ -81,6 +87,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         dataNotif = new javax.swing.JLabel();
         btnChangePos = new javax.swing.JButton();
         comboNewPosition = new javax.swing.JComboBox<>();
+        btnMkAdmin = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         comboPosition = new javax.swing.JComboBox<>();
@@ -179,6 +186,15 @@ public class EmpFrm extends javax.swing.JInternalFrame {
 
         comboNewPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Not positioned yet", "Courier", "Staff", "Supervisor" }));
 
+        btnMkAdmin.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
+        btnMkAdmin.setText("Make Admin");
+        btnMkAdmin.setPreferredSize(new java.awt.Dimension(130, 30));
+        btnMkAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMkAdminActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -192,6 +208,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnChangePos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMkAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnChangeStat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeleteRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,7 +247,8 @@ public class EmpFrm extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnChangeStat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnChangePos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(comboNewPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(comboNewPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnMkAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12))
         );
 
@@ -481,6 +500,31 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         this.print.printXLS(this.empDataGrid);
     }//GEN-LAST:event_btnPrntXlsActionPerformed
 
+    private void btnMkAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMkAdminActionPerformed
+        StringBuilder sb = new StringBuilder();
+        String ttl;
+        int type;
+        if(this.empDataGrid.getSelectedRow()<0) {
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+            this.main.userDialog(sb, ttl, type);
+        } else { 
+            int admin = new Integer(this.getSelectedAdmin());
+            if(admin > 0) {
+                sb.append("This Employee already have an Admin account !");
+                ttl = "LDS : Warning";
+                type = JOptionPane.WARNING_MESSAGE;
+                this.main.userDialog(sb, ttl, type);
+            } else {
+                int id = new Integer(this.getSelectedId());
+                AddAdmFrm frm = new AddAdmFrm(this.main, true, id);
+                this.setDialog(frm);
+                this.btnFilterActionPerformed(evt);
+            }
+        }
+    }//GEN-LAST:event_btnMkAdminActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -488,6 +532,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnChangeStat;
     private javax.swing.JButton btnDeleteRow;
     private javax.swing.JButton btnFilter;
+    private javax.swing.JButton btnMkAdmin;
     private javax.swing.JButton btnPrntPdf;
     private javax.swing.JButton btnPrntXls;
     private javax.swing.JButton btnReset;
