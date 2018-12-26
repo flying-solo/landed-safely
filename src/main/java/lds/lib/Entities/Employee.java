@@ -18,10 +18,11 @@ public class Employee {
     private String date_upd;
     private int position;
     private int activation;
+    private int id_admin;
 
     public Employee() {}
     
-    public Employee(String lastname, String firstname, int gender, String email, String address, String phone, int position) {
+    public Employee(String lastname, String firstname, int gender, String email, String address, String phone, int position, int id_admin) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.gender = gender;
@@ -29,6 +30,7 @@ public class Employee {
         this.address = address;
         this.phone = phone;
         this.position = position;
+        this.id_admin = id_admin;
     }
 
     public int getId() {
@@ -117,6 +119,14 @@ public class Employee {
 
     public void setActivation(int activation) {
         this.activation = activation;
+    }
+    
+    public int getId_admin() {
+        return this.id_admin;
+    }
+    
+    public void setId_admin(int id_admin) {
+        this.id_admin = id_admin;
     }
 
     @Override
