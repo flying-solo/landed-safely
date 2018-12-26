@@ -505,10 +505,10 @@ public class MainFrm extends javax.swing.JFrame {
                 this.parentPanel.add(childPanel1);
                 this.hasLoggedIn();
             } else {
-                this.labelLogin.setText("* Invalid Login Info ! *");
+                this.labelLogin.setText("Invalid Login Info.");
             }
         } else {
-            this.labelLogin.setText("* Fields cannot be empty ! *");
+            this.labelLogin.setText("Fields cannot be empty.");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

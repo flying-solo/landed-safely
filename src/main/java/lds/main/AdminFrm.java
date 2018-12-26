@@ -5,7 +5,10 @@
 package lds.main;
 
 import java.awt.event.ItemEvent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import lds.lib.Controllers.AdminController;
+import lds.lib.Libs.Print;
 import lds.lib.Models.tableModels.AdmGridModel;
 
 /**
@@ -14,14 +17,47 @@ import lds.lib.Models.tableModels.AdmGridModel;
  */
 public class AdminFrm extends javax.swing.JInternalFrame {
 
+    private final MainFrm main;
     private final AdminController admcon;
     private final AdmGridModel gridModel;
+    private final Print print;
+    
+    private JDialog dialog;
     
     public AdminFrm() {
+        this.main = new MainFrm();
         this.admcon = new AdminController();
         this.gridModel = new AdmGridModel(this.admcon.getAllAdmin());
+        this.print = new Print("Admininstrators");
         
         initComponents();
+        
+        this.setDataNotif(this.gridModel.getRowCount());
+    }
+    
+    private int getSelectedId() {
+        int id = new Integer(this.gridModel.getValueAt(admDataGrid.getSelectedRow(), 4).toString());
+        return id;
+    }
+    
+    private int getSelectedPermit() {
+        int id = new Integer(this.gridModel.getValueAt(admDataGrid.getSelectedRow(), 5).toString());
+        return id;
+    }
+    
+    private void setDataNotif(int count) {
+        if(count == 0) {
+            this.dataNotif.setText("No data found.");
+        } else {
+            this.dataNotif.setText("Found "+ count +" rows.");
+        }
+    }
+    
+    private void setDialog(JDialog dialog) {
+        this.dialog = dialog;
+        this.dialog.setLocationRelativeTo(null);
+        this.dialog.setResizable(false);
+        this.dialog.setVisible(true);
     }
 
     /**
@@ -33,21 +69,24 @@ public class AdminFrm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        radGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         comboPermit = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         btnPrntPDF = new javax.swing.JButton();
         btnPrntXLS = new javax.swing.JButton();
-        btnAddNew = new javax.swing.JButton();
         btnFilter = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         admDataGrid = new javax.swing.JTable();
         btnDeleteSel = new javax.swing.JButton();
-        comboNewPermit = new javax.swing.JComboBox<>();
         btnChangePermit = new javax.swing.JButton();
-        checkBox = new javax.swing.JCheckBox();
+        dataNotif = new javax.swing.JLabel();
+        txtEmp = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        radPermit = new javax.swing.JRadioButton();
+        radName = new javax.swing.JRadioButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -79,15 +118,6 @@ public class AdminFrm extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAddNew.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
-        btnAddNew.setText("+ Add New");
-        btnAddNew.setPreferredSize(new java.awt.Dimension(100, 30));
-        btnAddNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddNewActionPerformed(evt);
-            }
-        });
-
         btnFilter.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnFilter.setText("Filter");
         btnFilter.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -107,19 +137,17 @@ public class AdminFrm extends javax.swing.JInternalFrame {
         });
 
         admDataGrid.setModel(this.gridModel);
+        admDataGrid.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(admDataGrid);
 
         btnDeleteSel.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnDeleteSel.setText("Delete Selected");
-        btnDeleteSel.setMaximumSize(new java.awt.Dimension(122, 31));
         btnDeleteSel.setPreferredSize(new java.awt.Dimension(122, 30));
         btnDeleteSel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteSelActionPerformed(evt);
             }
         });
-
-        comboNewPermit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrator", "Superuser" }));
 
         btnChangePermit.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnChangePermit.setText("Change Permit");
@@ -130,6 +158,10 @@ public class AdminFrm extends javax.swing.JInternalFrame {
                 btnChangePermitActionPerformed(evt);
             }
         });
+
+        dataNotif.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        dataNotif.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dataNotif.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,17 +175,16 @@ public class AdminFrm extends javax.swing.JInternalFrame {
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 356, Short.MAX_VALUE)
-                        .addComponent(btnAddNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dataNotif, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                        .addGap(112, 112, 112)
                         .addComponent(btnPrntXLS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPrntPDF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(comboNewPermit, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnChangePermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnChangePermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeleteSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -164,22 +195,38 @@ public class AdminFrm extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPrntPDF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPrntXLS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dataNotif))
                     .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDeleteSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboNewPermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnChangePermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        checkBox.addItemListener(new java.awt.event.ItemListener() {
+        txtEmp.setEnabled(false);
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Employee Name");
+
+        radGroup.add(radPermit);
+        radPermit.setPreferredSize(new java.awt.Dimension(25, 25));
+        radPermit.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkBoxItemStateChanged(evt);
+                radPermitItemStateChanged(evt);
+            }
+        });
+
+        radGroup.add(radName);
+        radName.setPreferredSize(new java.awt.Dimension(25, 25));
+        radName.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                radNameItemStateChanged(evt);
             }
         });
 
@@ -193,11 +240,17 @@ public class AdminFrm extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(comboPermit, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtEmp)
+                            .addComponent(comboPermit, 0, 250, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(checkBox)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radPermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(radName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -205,77 +258,137 @@ public class AdminFrm extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(comboPermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkBox))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(comboPermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(radPermit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtEmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addComponent(radName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void radPermitItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radPermitItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            this.comboPermit.setEnabled(true);
+        } else if(evt.getStateChange() == ItemEvent.DESELECTED) {
+            this.comboPermit.setEnabled(false);
+        }
+    }//GEN-LAST:event_radPermitItemStateChanged
+
+    private void radNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radNameItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            this.txtEmp.setEnabled(true);
+        } else if(evt.getStateChange() == ItemEvent.DESELECTED) {
+            this.txtEmp.setEnabled(false);
+        }
+    }//GEN-LAST:event_radNameItemStateChanged
+
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        this.checkBox.setSelected(false);
+        this.radGroup.clearSelection();
+        this.comboPermit.setSelectedIndex(0);
+        this.txtEmp.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
-        if(this.checkBox.isSelected()) {
-            this.gridModel.setData(admcon.getAdmByPermit(this.comboPermit.getSelectedIndex()));
+        if(this.comboPermit.isEnabled()) {
+            int permit = this.comboPermit.getSelectedIndex();
+            this.gridModel.setData(admcon.getAdmByPermit(permit));
+        } else if(this.txtEmp.isEnabled()) {
+            String name = this.txtEmp.getText();
+            this.gridModel.setData(admcon.getAdmByEmpName(name));
         } else {
             this.gridModel.setData(admcon.getAllAdmin());
         }
+        setDataNotif(this.gridModel.getRowCount());
         this.gridModel.fireTableDataChanged();
     }//GEN-LAST:event_btnFilterActionPerformed
 
-    private void btnAddNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewActionPerformed
-        
-    }//GEN-LAST:event_btnAddNewActionPerformed
-
     private void btnPrntXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntXLSActionPerformed
-        
+        this.print.printXLS(this.admDataGrid);
     }//GEN-LAST:event_btnPrntXLSActionPerformed
 
     private void btnPrntPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrntPDFActionPerformed
-        
+        this.print.printPDF(this.admDataGrid);
     }//GEN-LAST:event_btnPrntPDFActionPerformed
 
     private void btnChangePermitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePermitActionPerformed
-        // TODO add your handling code here:
+        int permit = this.getSelectedPermit();
+        StringBuilder sb = new StringBuilder();
+        String ttl;
+        int type;
+        if(this.admDataGrid.getSelectedRow()<0) {
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
+        } else {
+            if(this.admcon.changePermit(this.getSelectedId(), permit)) {
+                sb.append("Permit changed !");
+                ttl = "LDS : Information";
+                type = JOptionPane.INFORMATION_MESSAGE;
+                this.btnFilterActionPerformed(evt);
+            } else {
+                sb.append("Unable to change permit.");
+                ttl = "LDS : Error";
+                type = JOptionPane.ERROR_MESSAGE;
+            }
+        }
+        this.main.userDialog(sb, ttl, type);
     }//GEN-LAST:event_btnChangePermitActionPerformed
 
     private void btnDeleteSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteSelActionPerformed
-        
-    }//GEN-LAST:event_btnDeleteSelActionPerformed
-
-    private void checkBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxItemStateChanged
-        if(evt.getStateChange() == ItemEvent.SELECTED) {
-            this.comboPermit.setEnabled(true);
+        StringBuilder sb = new StringBuilder();
+        String ttl;
+        int type;
+        if(this.admDataGrid.getSelectedRow()<0) {
+            sb.append("Theres no data selected !");
+            ttl = "LDS : Warning";
+            type = JOptionPane.WARNING_MESSAGE;
         } else {
-            this.comboPermit.setEnabled(false);
+            if(this.admcon.deleteAdmin(this.getSelectedId())) {
+                sb.append("Selected Admin deleted !");
+                ttl = "LDS : Information";
+                type = JOptionPane.INFORMATION_MESSAGE;
+                this.btnFilterActionPerformed(evt);
+            } else {
+                sb.append("Unable to delete selected Admin.");
+                ttl = "LDS : Error";
+                type = JOptionPane.ERROR_MESSAGE;
+            }
         }
-    }//GEN-LAST:event_checkBoxItemStateChanged
+        this.main.userDialog(sb, ttl, type);
+    }//GEN-LAST:event_btnDeleteSelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable admDataGrid;
-    private javax.swing.JButton btnAddNew;
     private javax.swing.JButton btnChangePermit;
     private javax.swing.JButton btnDeleteSel;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnPrntPDF;
     private javax.swing.JButton btnPrntXLS;
     private javax.swing.JButton btnReset;
-    private javax.swing.JCheckBox checkBox;
-    private javax.swing.JComboBox<String> comboNewPermit;
     private javax.swing.JComboBox<String> comboPermit;
+    private javax.swing.JLabel dataNotif;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.ButtonGroup radGroup;
+    private javax.swing.JRadioButton radName;
+    private javax.swing.JRadioButton radPermit;
+    private javax.swing.JTextField txtEmp;
     // End of variables declaration//GEN-END:variables
 }

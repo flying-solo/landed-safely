@@ -11,11 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import lds.lib.Entities.Province;
-import lds.lib.DAO.ProvinceDAO;
 import lds.lib.Libs.Conn;
+import lds.lib.DAO.ProvDAO;
 
 
-public class ProvController implements ProvinceDAO {
+public class ProvController implements ProvDAO {
     
     private Province extractResult(ResultSet rs) {
         try {

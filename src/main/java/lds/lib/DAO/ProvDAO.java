@@ -11,7 +11,7 @@ import lds.lib.Entities.Province;
  *
  * @author kaboel
  */
-public interface ProvinceDAO {
+public interface ProvDAO {
     ArrayList<Province> getAllProv();
     Province getProvById(int id);
 }

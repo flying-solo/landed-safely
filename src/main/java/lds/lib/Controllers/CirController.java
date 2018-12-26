@@ -12,11 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import lds.lib.Entities.CityRegency;
 import lds.lib.Libs.Conn;
-import lds.lib.DAO.CityRegencyDAO;
 import lds.lib.Entities.Province;
+import lds.lib.DAO.CirDAO;
 
 
-public class CirController implements CityRegencyDAO {
+public class CirController implements CirDAO {
     
     private CityRegency extractResult(ResultSet rs) {
         try {

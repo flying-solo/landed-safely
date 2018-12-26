@@ -43,7 +43,7 @@ public class MainUpdPass extends javax.swing.JDialog {
         if (Arrays.equals(this.passNew.getPassword(), this.passCon.getPassword())) {
             this.btnSave.setEnabled(true);
             this.labelNotif.setForeground(Color.GREEN);
-            this.labelNotif.setText("New Password match");
+            this.labelNotif.setText("New Password match !");
         } else {
            this.btnSave.setEnabled(false);
            this.labelNotif.setForeground(Color.RED);
@@ -225,6 +225,7 @@ public class MainUpdPass extends javax.swing.JDialog {
                 this.main.userDialog(sb, ttl, type);
             }
         } else {
+            this.labelNotif.setForeground(Color.RED);
             this.labelNotif.setText("Old Password invalid");
         }
     }//GEN-LAST:event_btnSaveActionPerformed

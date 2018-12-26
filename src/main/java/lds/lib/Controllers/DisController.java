@@ -10,13 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import lds.lib.DAO.DistrictDAO;
 import lds.lib.Entities.CityRegency;
 import lds.lib.Entities.District;
 import lds.lib.Libs.Conn;
+import lds.lib.DAO.DisDAO;
 
 
-public class DisController implements DistrictDAO {
+public class DisController implements DisDAO {
     
     private District extractResult(ResultSet rs) {
         try {

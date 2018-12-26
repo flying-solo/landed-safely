@@ -8,6 +8,7 @@ package lds.lib.Entities;
 
 public class Admin {
     private int id_admin;
+    private int id_employee;
     private String employee;
     private String username;
     private String password;
@@ -17,8 +18,9 @@ public class Admin {
 
     public Admin() {}
     
-    public Admin(int id_admin, String employee, String username, String password, String salt, String date_reg, int permit) {
+    public Admin(int id_admin, int id_employee, String employee, String username, String password, String salt, String date_reg, int permit) {
         this.id_admin = id_admin;
+        this.id_employee = id_employee;
         this.employee = employee;
         this.username = username;
         this.password = password;
@@ -29,6 +31,10 @@ public class Admin {
 
     public int getId_admin() {
         return id_admin;
+    }
+    
+    public int getId_employee() {
+        return id_employee;
     }
 
     public String getEmployee() {
@@ -57,6 +63,10 @@ public class Admin {
 
     public void setId_admin(int id_admin) {
         this.id_admin = id_admin;
+    }
+    
+    public void setId_employee(int id_employee) {
+        this.id_employee = id_employee;
     }
 
     public void setEmployee(String employee) {

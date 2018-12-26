@@ -12,7 +12,7 @@ import lds.lib.Entities.Province;
  *
  * @author kaboel
  */
-public interface CityRegencyDAO {
+public interface CirDAO {
     ArrayList<CityRegency> getAllCir();
     ArrayList<CityRegency> getCirByProv(Province prov);
 }

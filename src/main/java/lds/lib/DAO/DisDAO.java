@@ -12,7 +12,7 @@ import lds.lib.Entities.District;
  *
  * @author kaboel
  */
-public interface DistrictDAO {
+public interface DisDAO {
     ArrayList<District> getAllDis();
     ArrayList<District> getDisByCir(CityRegency cir);
 }

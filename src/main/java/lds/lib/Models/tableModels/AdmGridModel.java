@@ -51,6 +51,7 @@ public class AdmGridModel extends AbstractTableModel {
             case 2: tmp = this.data.get(row).getDate_reg(); break;
             case 3: tmp = permit; break;
             case 4: tmp = this.data.get(row).getId_admin(); break;
+            case 5: tmp = this.data.get(row).getPermit(); break;
         }
         return tmp;
     }

@@ -210,15 +210,14 @@ public class AddEmpFrm extends javax.swing.JDialog {
         if(this.radGroup.getSelection() == this.radMale.getModel()) {
             gender = 1;
         }
-        Employee emp = new Employee(
-            this.txtLast.getText(),
-            this.txtFirst.getText(),
-            gender,
-            this.txtEmail.getText(),
-            this.txtAddr.getText(),
-            this.txtPhone.getText(),
-            this.comboPosition.getSelectedIndex()
-        );
+        Employee emp = new Employee();
+        emp.setLastname(this.txtLast.getText());
+        emp.setFirstname(this.txtFirst.getText());
+        emp.setGender(gender);
+        emp.setEmail(this.txtEmail.getText());
+        emp.setAddress(this.txtAddr.getText());
+        emp.setPhone(this.txtPhone.getText());
+        emp.setPosition(this.comboPosition.getSelectedIndex());
         return emp;
     }
     

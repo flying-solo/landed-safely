@@ -14,6 +14,7 @@ import lds.lib.Entities.Admin;
 public interface AdminDAO {
     ArrayList<Admin> getAllAdmin();
     ArrayList<Admin> getAdmByPermit(int permit);
+    ArrayList<Admin> getAdmByEmpName(String name);
     Admin getAdmByUsername(String username);
     boolean insertAdmin(Admin admin);
     boolean changePermit(int id, int permit);
