@@ -32,6 +32,7 @@ public class EmpController implements EmpDAO {
             emp.setDate_upd(rs.getString("date_upd"));
             emp.setPosition(rs.getInt("position"));
             emp.setActivation(rs.getInt("activation"));
+            emp.setId_admin(rs.getInt("id_admin"));
             return emp;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -44,7 +45,24 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM t_employee");
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "   E.id_employee, " +
+                "   E.lastname, " +
+                "   E.firstname, " +
+                "   E.gender, " +
+                "   E.email, " +
+                "   E.address, " +
+                "   E.phone, " +
+                "   E.date_reg, " +
+                "   E.date_upd, " +
+                "   E.position, " +
+                "   E.activation, " +
+                "   A.id_admin " +
+                "FROM t_employee AS E " +
+                "LEFT JOIN t_admin AS A " +
+                "   ON E.id_employee = A.id_employee "
+            );
             ResultSet rs = st.executeQuery();
             
             while(rs.next()) {
@@ -64,7 +82,25 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM t_employee WHERE lastname LIKE ? OR firstname LIKE ?");
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "   E.id_employee, " +
+                "   E.lastname, " +
+                "   E.firstname, " +
+                "   E.gender, " +
+                "   E.email, " +
+                "   E.address, " +
+                "   E.phone, " +
+                "   E.date_reg, " +
+                "   E.date_upd, " +
+                "   E.position, " +
+                "   E.activation, " +
+                "   A.id_admin " +
+                "FROM t_employee AS E " +
+                "LEFT JOIN t_admin AS A " +
+                "   ON E.id_employee = A.id_employee " +
+                "WHERE E.lastname LIKE ? OR E.firstname LIKE ?"
+            );
             st.setString(1, "%"+name+"%");
             st.setString(2, "%"+name+"%");
             ResultSet rs = st.executeQuery();
@@ -86,7 +122,25 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM t_employee WHERE activation = ?");
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "   E.id_employee, " +
+                "   E.lastname, " +
+                "   E.firstname, " +
+                "   E.gender, " +
+                "   E.email, " +
+                "   E.address, " +
+                "   E.phone, " +
+                "   E.date_reg, " +
+                "   E.date_upd, " +
+                "   E.position, " +
+                "   E.activation, " +
+                "   A.id_admin " +
+                "FROM t_employee AS E " +
+                "LEFT JOIN t_admin AS A " +
+                "   ON E.id_employee = A.id_employee "+
+                "WHERE E.activation = ?"
+            );
             st.setString(1, status);
             ResultSet rs = st.executeQuery();
             
@@ -107,7 +161,25 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             Connection con = Conn.initConn();
-            PreparedStatement st = con.prepareStatement("SELECT * FROM t_employee WHERE position = ?");
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "   E.id_employee, " +
+                "   E.lastname, " +
+                "   E.firstname, " +
+                "   E.gender, " +
+                "   E.email, " +
+                "   E.address, " +
+                "   E.phone, " +
+                "   E.date_reg, " +
+                "   E.date_upd, " +
+                "   E.position, " +
+                "   E.activation, " +
+                "   A.id_admin " +
+                "FROM t_employee AS E " +
+                "LEFT JOIN t_admin AS A " +
+                "   ON E.id_employee = A.id_employee " +
+                "WHERE E.position = ?"
+            );
             st.setString(1, position);
             ResultSet rs = st.executeQuery();
             
@@ -117,6 +189,41 @@ public class EmpController implements EmpDAO {
             }
             
             return result;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    @Override
+    public Employee getEmpById(int id) {
+        try {
+            Connection con = Conn.initConn();
+            PreparedStatement st = con.prepareStatement(
+                "SELECT " +
+                "   E.id_employee, " +
+                "   E.lastname, " +
+                "   E.firstname, " +
+                "   E.gender, " +
+                "   E.email, " +
+                "   E.address, " +
+                "   E.phone, " +
+                "   E.date_reg, " +
+                "   E.date_upd, " +
+                "   E.position, " +
+                "   E.activation, " +
+                "   A.id_admin " +
+                "FROM t_employee AS E " +
+                "LEFT JOIN t_admin AS A " +
+                "   ON E.id_employee = A.id_employee " +
+                "WHERE E.id_employee = ?"
+            );
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            
+            if(rs.next()) {
+                return this.extractResult(rs);
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
