@@ -16,7 +16,7 @@ public class EmpGridModel extends AbstractTableModel {
     
     public EmpGridModel(ArrayList<Employee> data) {
         this.columns = new String[] {
-            "Name", "Gender", "Email", "Address", "Phone", "Position", "Status"
+            "Name", "Gender", "Email", "Address", "Phone", "Position", "Status", "Admin"
         };
         this.data = data;
     }
@@ -52,6 +52,13 @@ public class EmpGridModel extends AbstractTableModel {
             default : position = "Not Positioned Yet";
         }
         
+        String admin;
+        if(this.data.get(row).getId_admin() > 0) {
+            admin = "YES";
+        } else {
+            admin = "NO";
+        }
+        
         String status;
         if(this.data.get(row).getActivation() == 1) {
             status = "Active";
@@ -69,7 +76,9 @@ public class EmpGridModel extends AbstractTableModel {
             case 4 : tmp = this.data.get(row).getPhone(); break;
             case 5 : tmp = position; break;
             case 6 : tmp = status; break;
-            case 7 : tmp = this.data.get(row).getId(); break;
+            case 7 : tmp = admin; break;
+            case 8 : tmp = this.data.get(row).getId(); break;
+            case 9 : tmp = this.data.get(row).getId_admin(); break;
         }
         return tmp;
     }
@@ -81,7 +90,7 @@ public class EmpGridModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int col) {
-        if(col == 7) {
+        if(col == 8 || col == 9) {
             return Integer.class;
         } else {
             return String.class;
