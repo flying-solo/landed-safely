@@ -52,13 +52,6 @@ public class AdminFrm extends javax.swing.JInternalFrame {
             this.dataNotif.setText("Found "+ count +" rows.");
         }
     }
-    
-    private void setDialog(JDialog dialog) {
-        this.dialog = dialog;
-        this.dialog.setLocationRelativeTo(null);
-        this.dialog.setResizable(false);
-        this.dialog.setVisible(true);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
