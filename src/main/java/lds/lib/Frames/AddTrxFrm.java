@@ -4,18 +4,96 @@
  */
 package lds.lib.Frames;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+import lds.lib.Controllers.ShipCneeController;
+import lds.lib.Entities.Consignee;
+import lds.lib.Entities.Shipper;
+import lds.lib.Entities.Transact;
+import lds.main.MainFrm;
+
 /**
  *
  * @author kaboel
  */
 public class AddTrxFrm extends javax.swing.JDialog {
 
-    /**
-     * Creates new form NewJDialog
-     */
+    private final MainFrm main;
+    private final ShipCneeController shpcnecon;
+    
     public AddTrxFrm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        
+        this.main = new MainFrm();
+        this.shpcnecon = new ShipCneeController();
+        
         initComponents();
+    }
+    
+    private String getId() {
+        Random random = new Random(System.currentTimeMillis());
+        int rand = (1 + random.nextInt(2)) * 10000 + random.nextInt(10000);
+        String dt = new SimpleDateFormat("yyMMdd").format(new Date());
+        return String.format("TRX"+dt+rand);
+    }
+    
+    private Shipper getShipper(String id) {
+        Shipper ship = new Shipper();
+        ship.setId_trx(id);
+        ship.setName(this.txtShipName.getText());
+        ship.setAddress(this.txtShipAddr.getText());
+        ship.setPhone(this.txtShipPhn.getText());
+        return ship;
+    }
+    
+    private Consignee getConsig(String id) {
+        Consignee cnee = new Consignee();
+        cnee.setId_trx(id);
+        cnee.setName(this.txtCneeName.getText());
+        cnee.setAddress(this.txtCneeAddr.getText());
+        cnee.setPhone(this.txtCneePhn.getText());
+        return cnee;
+    }
+    
+    private Transact getTransact(String id) {
+        Transact trx = new Transact();
+        
+        return trx;
+    }
+    
+    private boolean isEmpty() {
+        return this.txtShipName.getText() == null       || this.txtShipName.equals("") || 
+                this.txtShipAddr.getText() == null      || this.txtShipAddr.getText().equals("") ||
+                this.txtShipPhn.getText() == null       || this.txtShipPhn.getText().equals("") ||
+                this.txtCneeName.getText() == null      || this.txtCneeName.getText().equals("") ||
+                this.txtCneePhn.getText() == null       || this.txtCneePhn.getText().equals("") ||
+                this.txtCneeAddr.getText() == null      || this.txtCneeAddr.getText().equals("") ||
+                this.txtTrxWeight.getValue() == null    || this.txtTrxWeight.getValue() == new Integer(0) ||
+                this.txtTrxDet.getText() == null        || this.txtTrxDet.getText().equals("");
+    }
+    
+    private void clearShipper() {
+        this.txtShipName.setText("");
+        this.txtShipPhn.setText("");
+        this.txtShipAddr.setText("");
+        this.comboShpCity.setSelectedIndex(0);
+        this.comboShpArea.setSelectedIndex(0);
+    }
+    private void clearConsignee() {
+        this.txtCneeName.setText("");
+        this.txtCneePhn.setText("");
+        this.txtCneeAddr.setText("");
+        this.comboCneeCity.setSelectedIndex(0);
+        this.comboCneeArea.setSelectedIndex(0);
+    }
+    private void clearDetails() {
+        this.txtTrxDet.setText("");
+        this.txtTrxWeight.setValue(0);
+        this.comboTrxDest.setSelectedIndex(0);
+        this.comboTrxOrig.setSelectedIndex(0);
+        this.comboTrxPckg.setSelectedIndex(0);
+        this.comboTrxSrvc.setSelectedIndex(0);
     }
 
     /**
@@ -28,8 +106,8 @@ public class AddTrxFrm extends javax.swing.JDialog {
     private void initComponents() {
 
         panelShipper = new javax.swing.JPanel();
-        txtShipRegTo = new javax.swing.JTextField();
-        txtShpPhn = new javax.swing.JTextField();
+        txtShipName = new javax.swing.JTextField();
+        txtShipPhn = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -39,7 +117,7 @@ public class AddTrxFrm extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         btnResetShipper = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        txtarShpAddr = new javax.swing.JTextArea();
+        txtShipAddr = new javax.swing.JTextArea();
         panelDetails = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         comboTrxOrig = new javax.swing.JComboBox<>();
@@ -51,7 +129,7 @@ public class AddTrxFrm extends javax.swing.JDialog {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        txtarTrxDetails = new javax.swing.JTextArea();
+        txtTrxDet = new javax.swing.JTextArea();
         comboTrxSrvc = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         txtTrxTotal = new javax.swing.JTextField();
@@ -60,18 +138,18 @@ public class AddTrxFrm extends javax.swing.JDialog {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         panelConsig = new javax.swing.JPanel();
-        txtCneRegTo = new javax.swing.JTextField();
-        txtCnePhn = new javax.swing.JTextField();
+        txtCneeName = new javax.swing.JTextField();
+        txtCneePhn = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        comboCneCity = new javax.swing.JComboBox<>();
-        comboCneArea = new javax.swing.JComboBox<>();
+        comboCneeCity = new javax.swing.JComboBox<>();
+        comboCneeArea = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         btnResetCnee = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        txtarCneAddr = new javax.swing.JTextArea();
+        txtCneeAddr = new javax.swing.JTextArea();
         btnPurge = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
 
@@ -83,22 +161,33 @@ public class AddTrxFrm extends javax.swing.JDialog {
 
         panelShipper.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Shipper"));
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel2.setText("Registered To");
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel3.setText("Phone Number");
 
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel4.setText("Full Address");
 
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel5.setText("City / Regency");
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel6.setText("Area");
 
+        btnResetShipper.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnResetShipper.setText("Reset");
-        btnResetShipper.setPreferredSize(new java.awt.Dimension(100, 31));
+        btnResetShipper.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnResetShipper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetShipperActionPerformed(evt);
+            }
+        });
 
-        txtarShpAddr.setColumns(20);
-        txtarShpAddr.setRows(5);
-        jScrollPane5.setViewportView(txtarShpAddr);
+        txtShipAddr.setColumns(20);
+        txtShipAddr.setRows(5);
+        jScrollPane5.setViewportView(txtShipAddr);
 
         javax.swing.GroupLayout panelShipperLayout = new javax.swing.GroupLayout(panelShipper);
         panelShipper.setLayout(panelShipperLayout);
@@ -110,13 +199,13 @@ public class AddTrxFrm extends javax.swing.JDialog {
                     .addGroup(panelShipperLayout.createSequentialGroup()
                         .addGroup(panelShipperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelShipperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtShipRegTo)
+                                .addComponent(txtShipName)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelShipperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtShpPhn)
+                            .addComponent(txtShipPhn)
                             .addComponent(comboShpCity, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -134,8 +223,8 @@ public class AddTrxFrm extends javax.swing.JDialog {
                     .addComponent(jLabel3))
                 .addGap(4, 4, 4)
                 .addGroup(panelShipperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtShipRegTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtShpPhn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtShipName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtShipPhn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(panelShipperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelShipperLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -159,36 +248,46 @@ public class AddTrxFrm extends javax.swing.JDialog {
 
         panelDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Details"));
 
+        jLabel12.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Origin");
 
+        jLabel13.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Destination");
 
+        jLabel14.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Package Type");
 
+        jLabel15.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Weight");
 
+        jLabel16.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Package Details");
 
+        jLabel17.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setText("Service Type");
 
-        txtarTrxDetails.setColumns(20);
-        txtarTrxDetails.setRows(5);
-        jScrollPane3.setViewportView(txtarTrxDetails);
+        txtTrxDet.setColumns(20);
+        txtTrxDet.setRows(5);
+        jScrollPane3.setViewportView(txtTrxDet);
 
+        jLabel18.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Total");
 
+        btnResetDetails.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnResetDetails.setText("Reset");
-        btnResetDetails.setPreferredSize(new java.awt.Dimension(100, 31));
+        btnResetDetails.setPreferredSize(new java.awt.Dimension(100, 30));
 
+        jLabel19.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel19.setText("kg");
 
+        jLabel20.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel20.setText("Rp.");
 
         javax.swing.GroupLayout panelDetailsLayout = new javax.swing.GroupLayout(panelDetails);
@@ -273,22 +372,28 @@ public class AddTrxFrm extends javax.swing.JDialog {
 
         panelConsig.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Consignee"));
 
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel7.setText("Send To");
 
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel8.setText("Phone Number");
 
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel9.setText("Full Address");
 
+        jLabel10.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel10.setText("City / Regency");
 
+        jLabel11.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jLabel11.setText("Area");
 
+        btnResetCnee.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnResetCnee.setText("Reset");
         btnResetCnee.setPreferredSize(new java.awt.Dimension(100, 31));
 
-        txtarCneAddr.setColumns(20);
-        txtarCneAddr.setRows(5);
-        jScrollPane4.setViewportView(txtarCneAddr);
+        txtCneeAddr.setColumns(20);
+        txtCneeAddr.setRows(5);
+        jScrollPane4.setViewportView(txtCneeAddr);
 
         javax.swing.GroupLayout panelConsigLayout = new javax.swing.GroupLayout(panelConsig);
         panelConsig.setLayout(panelConsigLayout);
@@ -300,17 +405,17 @@ public class AddTrxFrm extends javax.swing.JDialog {
                     .addGroup(panelConsigLayout.createSequentialGroup()
                         .addGroup(panelConsigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelConsigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtCneRegTo)
+                                .addComponent(txtCneeName)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelConsigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCnePhn)
-                            .addComponent(comboCneCity, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCneePhn)
+                            .addComponent(comboCneeCity, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboCneArea, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboCneeArea, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnResetCnee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -324,8 +429,8 @@ public class AddTrxFrm extends javax.swing.JDialog {
                     .addComponent(jLabel8))
                 .addGap(4, 4, 4)
                 .addGroup(panelConsigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCneRegTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCnePhn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCneeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCneePhn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(panelConsigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelConsigLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -336,22 +441,24 @@ public class AddTrxFrm extends javax.swing.JDialog {
                 .addGap(4, 4, 4)
                 .addGroup(panelConsigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelConsigLayout.createSequentialGroup()
-                        .addComponent(comboCneCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboCneeCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11)
                         .addGap(4, 4, 4)
-                        .addComponent(comboCneArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(comboCneeArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(btnResetCnee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
+        btnPurge.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnPurge.setText("Reset All");
-        btnPurge.setPreferredSize(new java.awt.Dimension(110, 31));
+        btnPurge.setPreferredSize(new java.awt.Dimension(110, 30));
 
+        btnSave.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         btnSave.setText("Save");
-        btnSave.setPreferredSize(new java.awt.Dimension(110, 31));
+        btnSave.setPreferredSize(new java.awt.Dimension(110, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -386,11 +493,15 @@ public class AddTrxFrm extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPurge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnResetShipperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetShipperActionPerformed
+        System.out.println(this.getId());
+    }//GEN-LAST:event_btnResetShipperActionPerformed
 
     /**
      * @param args the command line arguments
@@ -441,8 +552,8 @@ public class AddTrxFrm extends javax.swing.JDialog {
     private javax.swing.JButton btnResetDetails;
     private javax.swing.JButton btnResetShipper;
     private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox<String> comboCneArea;
-    private javax.swing.JComboBox<String> comboCneCity;
+    private javax.swing.JComboBox<String> comboCneeArea;
+    private javax.swing.JComboBox<String> comboCneeCity;
     private javax.swing.JComboBox<String> comboShpArea;
     private javax.swing.JComboBox<String> comboShpCity;
     private javax.swing.JComboBox<String> comboTrxDest;
@@ -474,14 +585,14 @@ public class AddTrxFrm extends javax.swing.JDialog {
     private javax.swing.JPanel panelConsig;
     private javax.swing.JPanel panelDetails;
     private javax.swing.JPanel panelShipper;
-    private javax.swing.JTextField txtCnePhn;
-    private javax.swing.JTextField txtCneRegTo;
-    private javax.swing.JTextField txtShipRegTo;
-    private javax.swing.JTextField txtShpPhn;
+    private javax.swing.JTextArea txtCneeAddr;
+    private javax.swing.JTextField txtCneeName;
+    private javax.swing.JTextField txtCneePhn;
+    private javax.swing.JTextArea txtShipAddr;
+    private javax.swing.JTextField txtShipName;
+    private javax.swing.JTextField txtShipPhn;
+    private javax.swing.JTextArea txtTrxDet;
     private javax.swing.JTextField txtTrxTotal;
     private javax.swing.JSpinner txtTrxWeight;
-    private javax.swing.JTextArea txtarCneAddr;
-    private javax.swing.JTextArea txtarShpAddr;
-    private javax.swing.JTextArea txtarTrxDetails;
     // End of variables declaration//GEN-END:variables
 }
