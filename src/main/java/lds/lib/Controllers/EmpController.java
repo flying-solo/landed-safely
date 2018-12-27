@@ -11,12 +11,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lds.lib.DAO.EmpDAO;
 import lds.lib.Entities.Employee;
 import lds.lib.Libs.Conn;
 
 
 public class EmpController implements EmpDAO {
+    
+    private Connection con;
+    
+    public EmpController() {
+        try {
+            this.con = Conn.initConn();
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     private Employee extractResult(ResultSet rs) {
         Employee emp = new Employee();
@@ -44,7 +57,6 @@ public class EmpController implements EmpDAO {
     public ArrayList<Employee> getAllEmp() {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "   E.id_employee, " +
@@ -81,7 +93,6 @@ public class EmpController implements EmpDAO {
     public ArrayList<Employee> getEmpByName(String name) {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "   E.id_employee, " +
@@ -121,7 +132,6 @@ public class EmpController implements EmpDAO {
     public ArrayList<Employee> getEmpByStatus(String status) {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "   E.id_employee, " +
@@ -160,7 +170,6 @@ public class EmpController implements EmpDAO {
     public ArrayList<Employee> getEmpByPosition(String position) {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "   E.id_employee, " +
@@ -198,7 +207,6 @@ public class EmpController implements EmpDAO {
     @Override
     public Employee getEmpById(int id) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "   E.id_employee, " +
@@ -233,7 +241,6 @@ public class EmpController implements EmpDAO {
     @Override
     public boolean insertEmp(Employee emp) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("INSERT INTO t_employee ("
                     + "lastname, firstname, gender, email, address, phone, position"
                     + ") VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -264,7 +271,6 @@ public class EmpController implements EmpDAO {
             newstat = "1";
         }
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("UPDATE t_employee SET activation = ? WHERE id_employee = ?");
             st.setInt(1, new Integer(newstat));
             st.setInt(2, new Integer(id));
@@ -281,7 +287,6 @@ public class EmpController implements EmpDAO {
     @Override
     public boolean updatePosition(String id, String position) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("UPDATE t_employee SET position = ? WHERE id_employee = ?");
             st.setInt(1, new Integer(position));
             st.setInt(2, new Integer(id));
@@ -298,7 +303,6 @@ public class EmpController implements EmpDAO {
     @Override
     public boolean deleteEmp(String id) {
         try {
-            Connection con = Conn.initConn();
             Statement st = con.createStatement();
             int i = st.executeUpdate("DELETE FROM t_employee WHERE id_employee = "+ id);
             if(i == 1) {

@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lds.lib.Entities.Area;
 import lds.lib.DAO.AreaDAO;
 import lds.lib.Entities.CityRegency;
@@ -19,6 +21,16 @@ import lds.lib.Libs.Conn;
 
 
 public class AreaController implements AreaDAO {
+    
+    private Connection con;
+    
+    public AreaController() {
+        try {
+            this.con = Conn.initConn();
+        } catch (SQLException ex) {
+            Logger.getLogger(AreaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private Area extractResult(ResultSet rs) {
         try {
@@ -41,7 +53,6 @@ public class AreaController implements AreaDAO {
     public ArrayList<Area> getAllArea() {
         ArrayList<Area> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    A.id_area, " +
@@ -83,7 +94,6 @@ public class AreaController implements AreaDAO {
         ArrayList<Area> result = new ArrayList<>();
         
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    A.id_area, " +
@@ -124,7 +134,6 @@ public class AreaController implements AreaDAO {
     @Override
     public Area getAreaById(String id) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    A.id_area, " +
@@ -161,7 +170,6 @@ public class AreaController implements AreaDAO {
     @Override
     public boolean updateArea(Area area) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "UPDATE m_area SET " +
                     "sub_district = ? , " +
@@ -184,7 +192,6 @@ public class AreaController implements AreaDAO {
     @Override
     public boolean insertArea(Area area, Province prov, CityRegency cir, District dis) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("INSERT INTO m_area VALUES (?, ?, ?, ?, ?, ?)");
             st.setString(1, area.getId());
             st.setInt(2, prov.getId());
@@ -205,7 +212,6 @@ public class AreaController implements AreaDAO {
     @Override
     public boolean deleteArea(String id) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("DELETE FROM m_area WHERE id_area = ?");
             st.setString(1, id);
             int i = st.executeUpdate();

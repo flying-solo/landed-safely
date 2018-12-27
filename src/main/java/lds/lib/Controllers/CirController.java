@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lds.lib.Entities.CityRegency;
 import lds.lib.Libs.Conn;
 import lds.lib.Entities.Province;
@@ -17,6 +19,16 @@ import lds.lib.DAO.CirDAO;
 
 
 public class CirController implements CirDAO {
+    
+    private Connection con;
+    
+    public CirController() {
+        try {
+            this.con = Conn.initConn();
+        } catch (SQLException ex) {
+            Logger.getLogger(CirController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private CityRegency extractResult(ResultSet rs) {
         try {
@@ -36,7 +48,6 @@ public class CirController implements CirDAO {
     public ArrayList<CityRegency> getAllCir() {
         ArrayList<CityRegency> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("SELECT * FROM m_cityregency");
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
@@ -55,7 +66,6 @@ public class CirController implements CirDAO {
         ArrayList<CityRegency> result = new ArrayList<>();
         int idprov = prov.getId();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    C.id_cityregency, " +

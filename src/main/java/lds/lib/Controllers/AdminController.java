@@ -10,12 +10,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lds.lib.DAO.AdminDAO;
 import lds.lib.Entities.Admin;
 import lds.lib.Libs.Conn;
 
 public class AdminController implements AdminDAO {
 
+    private Connection con;
+    
+    public AdminController() {
+        try {
+            this.con = Conn.initConn();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private Admin extractResult(ResultSet rs) {
         try {
             Admin admin = new Admin(
@@ -39,7 +51,6 @@ public class AdminController implements AdminDAO {
     public ArrayList<Admin> getAllAdmin() {
         ArrayList<Admin> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    A.id_admin, " +
@@ -72,7 +83,6 @@ public class AdminController implements AdminDAO {
     public ArrayList<Admin> getAdmByPermit(int permit) {
         ArrayList<Admin> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    A.id_admin, " +
@@ -107,7 +117,6 @@ public class AdminController implements AdminDAO {
     public ArrayList<Admin> getAdmByEmpName(String name) {
         ArrayList<Admin> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "    A.id_admin, " +
@@ -148,7 +157,6 @@ public class AdminController implements AdminDAO {
             newpermit = 1;
         }
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "UPDATE t_admin SET permit = ? WHERE id_admin = ?"
             );
@@ -167,7 +175,6 @@ public class AdminController implements AdminDAO {
     @Override
     public boolean deleteAdmin(int id) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "DELETE FROM t_admin WHERE id_admin = ?"
             );
@@ -185,7 +192,6 @@ public class AdminController implements AdminDAO {
     @Override
     public boolean changePass(int id, String pass, String salt) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "UPDATE t_admin SET " +
                     "password = ? ," +
@@ -208,7 +214,6 @@ public class AdminController implements AdminDAO {
     @Override
     public boolean insertAdmin(Admin admin) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "INSERT INTO t_admin (id_employee, username, password, salt_value, date_reg, permit) " +
                 "VALUES (?, ?, ?, ?, NOW(), ?)"
@@ -231,7 +236,6 @@ public class AdminController implements AdminDAO {
     @Override
     public Admin getAdmByUsername(String username) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT " +
                 "   A.id_admin, " +

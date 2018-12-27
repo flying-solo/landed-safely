@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lds.lib.DAO.ShipCneeDAO;
 import lds.lib.Entities.Consignee;
 import lds.lib.Entities.Shipper;
@@ -16,6 +18,16 @@ import lds.lib.Libs.Conn;
 
 
 public class ShipCneeController implements ShipCneeDAO {
+    
+    private Connection con;
+    
+    public ShipCneeController() {
+        try {
+            this.con = Conn.initConn();
+        } catch (SQLException ex) {
+            Logger.getLogger(ShipCneeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private Shipper extractShipper(ResultSet rs) {
         try {
@@ -36,7 +48,6 @@ public class ShipCneeController implements ShipCneeDAO {
     @Override
     public Shipper getShipperByTrx(String id_trx) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT * FROM m_shipper WHERE id_trx = ?"
             );
@@ -54,7 +65,6 @@ public class ShipCneeController implements ShipCneeDAO {
     @Override
     public boolean insertShipper(Shipper ship) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "INSERT INTO m_shipper (id_trx, reg_to, full_address, phone_number) "+
                 "VALUES (?, ?, ?, ?)"
@@ -93,7 +103,6 @@ public class ShipCneeController implements ShipCneeDAO {
     @Override
     public Consignee getConsigByTrx(String id_trx) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "SELECT * FROM m_consignee WHERE id_trx = ?"
             );
@@ -111,7 +120,6 @@ public class ShipCneeController implements ShipCneeDAO {
     @Override
     public boolean insertConsig(Consignee cnee) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement(
                 "INSERT INTO m_consignee (id_trx, reg_to, full_address, phone_number) "+
                 "VALUES (?, ?, ?, ?)"

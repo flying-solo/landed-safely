@@ -17,15 +17,15 @@ public class Conn {
     
     static {
         try {
-            String server = "localhost";
-            String port = "3306";
+            String servhost = "localhost";
+            String servport = "3306";
             String timezone = "GMT";
             String database = "lds";
             String username = "root";
             String password = "";
             String url = String.format("jdbc:mysql://address=(host=%s)(port=%s)(serverTimezone=%s)/%s",
-                server, 
-                port, 
+                servhost, 
+                servport, 
                 timezone,
                 database
             );

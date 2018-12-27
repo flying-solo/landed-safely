@@ -10,12 +10,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lds.lib.Entities.Province;
 import lds.lib.Libs.Conn;
 import lds.lib.DAO.ProvDAO;
 
 
 public class ProvController implements ProvDAO {
+    
+    private Connection con;
+    
+    public ProvController() {
+        try {
+            this.con = Conn.initConn();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProvController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private Province extractResult(ResultSet rs) {
         try {
@@ -34,7 +46,6 @@ public class ProvController implements ProvDAO {
     public ArrayList<Province> getAllProv() {
         ArrayList<Province> result = new ArrayList<>();
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("SELECT * FROM m_province");
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
@@ -51,7 +62,6 @@ public class ProvController implements ProvDAO {
     @Override
     public Province getProvById(int id) {
         try {
-            Connection con = Conn.initConn();
             PreparedStatement st = con.prepareStatement("SELECT * FROM m_province WHERE id_province = ?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -59,7 +69,7 @@ public class ProvController implements ProvDAO {
                 return this.extractResult(rs);
             }
         } catch (SQLException e) {
-            
+            System.err.println(e.getMessage());
         }
         return null;
     }
