@@ -7,6 +7,7 @@ package lds.main;
 import java.awt.event.ItemEvent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import lds.lib.Controllers.AdminController;
 import lds.lib.Frames.AddEmpFrm;
 import lds.lib.Controllers.EmpController;
 import lds.lib.Frames.AddAdmFrm;
@@ -19,16 +20,19 @@ import lds.lib.Models.tableModels.EmpGridModel;
  */
 public class EmpFrm extends javax.swing.JInternalFrame {
     
-    private final MainFrm main = new MainFrm();
+    private final MainFrm main;
     private final EmpGridModel gridModel;
-    private final EmpController controller;
+    private final EmpController empcon;
+    private final AdminController admcon;
     
     private JDialog dialog;
     private Print print;
     
     public EmpFrm() {
-        this.controller = new EmpController();
-        this.gridModel = new EmpGridModel(controller.getAllEmp());
+        this.main = new MainFrm();
+        this.empcon = new EmpController();
+        this.admcon = new AdminController();
+        this.gridModel = new EmpGridModel(empcon.getAllEmp());
         
         initComponents();
         
@@ -380,16 +384,16 @@ public class EmpFrm extends javax.swing.JInternalFrame {
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
         if(isCleared()) {
-            this.gridModel.setData(this.controller.getAllEmp());
+            this.gridModel.setData(this.empcon.getAllEmp());
         } else if(this.txtName.isEnabled()) {
             String str = this.txtName.getText();
-            this.gridModel.setData(this.controller.getEmpByName(str));   
+            this.gridModel.setData(this.empcon.getEmpByName(str));   
         } else if(this.comboPosition.isEnabled()) {
             int position = this.comboPosition.getSelectedIndex();
-            this.gridModel.setData(this.controller.getEmpByPosition(Integer.toString(position)));
+            this.gridModel.setData(this.empcon.getEmpByPosition(Integer.toString(position)));
         } else if(this.comboStatus.isEnabled()) {
             int status = this.comboStatus.getSelectedIndex();
-            this.gridModel.setData(this.controller.getEmpByStatus(Integer.toString(status)));
+            this.gridModel.setData(this.empcon.getEmpByStatus(Integer.toString(status)));
         }
         setDataNotif(this.gridModel.getRowCount());
         this.gridModel.fireTableDataChanged();
@@ -419,7 +423,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
             } else {
                 empstat = "0";
             }
-            if(this.controller.updateStat(empId, empstat)) {
+            if(this.empcon.updateStat(empId, empstat)) {
                 sb.append("Status changed !");
                 type = JOptionPane.INFORMATION_MESSAGE;
                 ttl = "LDS : Information";
@@ -450,16 +454,39 @@ public class EmpFrm extends javax.swing.JInternalFrame {
         } else {
             int i = this.main.confPrompt("Are you sure you want to delete this employee?");
             if(i == JOptionPane.YES_OPTION) {
-                if(this.controller.deleteEmp(this.getSelectedId())) {
-                    sb.append("Selected employee deleted !");
-                    type = JOptionPane.INFORMATION_MESSAGE;
-                    ttl = "LDS : Information";
+                int admin = new Integer(this.getSelectedAdmin());
+                if(admin > 0) {
+                    int j = this.main.confPrompt(
+                        "This Employee is listed on the Administrative account ownership list. \n" +
+                        "If you delete this Employee, the existing account will also be erased. \n" +
+                        "Do you still want to delete this Employee ?"
+                    );
+                    if(j == JOptionPane.YES_OPTION) {
+                        boolean delAdm = this.admcon.deleteAdmin(admin);
+                        boolean delEmp = this.empcon.deleteEmp(this.getSelectedId());
+                        if(delAdm && delEmp) {
+                            sb.append("Selected employee deleted !");
+                            type = JOptionPane.INFORMATION_MESSAGE;
+                            ttl = "LDS : Information";
+                            this.btnFilterActionPerformed(evt);
+                        } else {
+                            sb.append("Unable to delete selected employee.");
+                            type = JOptionPane.ERROR_MESSAGE;
+                            ttl = "LDS : Error";
+                        }
+                    }
                 } else {
-                    sb.append("Unable to delete selected employee.");
-                    type = JOptionPane.ERROR_MESSAGE;
-                    ttl = "LDS : Error";
+                    if(this.empcon.deleteEmp(this.getSelectedId())) {
+                        sb.append("Selected employee deleted !");
+                        type = JOptionPane.INFORMATION_MESSAGE;
+                        ttl = "LDS : Information";
+                        this.btnFilterActionPerformed(evt);
+                    } else {
+                        sb.append("Unable to delete selected employee.");
+                        type = JOptionPane.ERROR_MESSAGE;
+                        ttl = "LDS : Error";
+                    }
                 }
-                this.btnFilterActionPerformed(evt);
             }
         }
         this.main.userDialog(sb, ttl, type);
@@ -480,7 +507,7 @@ public class EmpFrm extends javax.swing.JInternalFrame {
             ttl = "LDS : Warning";
             type = JOptionPane.WARNING_MESSAGE;
         } else {
-            if(this.controller.updatePosition(this.getSelectedId(), Integer.toString(position))) {
+            if(this.empcon.updatePosition(this.getSelectedId(), Integer.toString(position))) {
                 sb.append("Position changed !");
                 ttl = "LDS : Information";
                 type = JOptionPane.INFORMATION_MESSAGE;
