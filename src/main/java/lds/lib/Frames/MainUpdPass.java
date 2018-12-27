@@ -74,6 +74,7 @@ public class MainUpdPass extends javax.swing.JDialog {
         btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Change Password");
         setResizable(false);
 
         jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
