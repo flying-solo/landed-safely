@@ -82,13 +82,13 @@ DROP TABLE IF EXISTS `m_consignee`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `m_consignee` (
   `id_consignee` int(11) NOT NULL AUTO_INCREMENT,
-  `id_shipper` int(11) NOT NULL,
+  `id_trx` varchar(20) NOT NULL,
   `reg_to` varchar(50) NOT NULL,
   `full_address` varchar(255) NOT NULL,
   `phone_number` varchar(20) NOT NULL,
   PRIMARY KEY (`id_consignee`),
-  KEY `fk_ship_cons` (`id_shipper`),
-  CONSTRAINT `fk_ship_cons` FOREIGN KEY (`id_shipper`) REFERENCES `m_shipper` (`id_shipper`)
+  KEY `fk_trx_cons` (`id_trx`),
+  CONSTRAINT `fk_trx_cons` FOREIGN KEY (`id_trx`) REFERENCES `m_transaction` (`id_trx`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,7 +269,7 @@ DROP TABLE IF EXISTS `m_transaction`;
 CREATE TABLE `m_transaction` (
   `id_trx` varchar(20) NOT NULL,
   `id_admin` int(11) NOT NULL,
-  `id_courier` int(11) NOT NULL,
+  `id_courier` int(11) DEFAULT NULL,
   `id_fleet` int(11) NOT NULL,
   `id_origin` varchar(20) NOT NULL,
   `id_destination` varchar(20) NOT NULL,
@@ -351,7 +351,7 @@ CREATE TABLE `t_admin` (
   UNIQUE KEY `username` (`username`),
   KEY `fk_admin_emp` (`id_employee`),
   CONSTRAINT `fk_admin_emp` FOREIGN KEY (`id_employee`) REFERENCES `t_employee` (`id_employee`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +360,7 @@ CREATE TABLE `t_admin` (
 
 LOCK TABLES `t_admin` WRITE;
 /*!40000 ALTER TABLE `t_admin` DISABLE KEYS */;
-INSERT INTO `t_admin` VALUES (1,1,'kaboel','3gHGmphpJLyZAmubkUAdoF1dQRi770FPvwcQcuXd8/I=','q4OmZdC6jDo7UECW4dBzM0T0McHzz6','2018-11-30 00:28:26',1),(2,2,'hesti','EAEsh3HIf6w+cbSo9Pk6ngYk35e9YMBwcEFsuLL7TXo=','W42PU3zKhGp5puyMBYNC0Bn9QRDopp','2018-12-12 00:42:49',0),(3,13,'elliot','5RWE/D2+qrlLiH6RV8xFIi7hV4UNd7fl9NZv82c9eto=','8suMRH1iAbJk9OiOMMCz7IvBwqONt8','2018-12-27 05:37:48',0);
+INSERT INTO `t_admin` VALUES (1,1,'kaboel','3gHGmphpJLyZAmubkUAdoF1dQRi770FPvwcQcuXd8/I=','q4OmZdC6jDo7UECW4dBzM0T0McHzz6','2018-11-30 00:28:26',1),(2,2,'hesti','EAEsh3HIf6w+cbSo9Pk6ngYk35e9YMBwcEFsuLL7TXo=','W42PU3zKhGp5puyMBYNC0Bn9QRDopp','2018-12-12 00:42:49',0);
 /*!40000 ALTER TABLE `t_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,7 +384,7 @@ CREATE TABLE `t_employee` (
   `position` int(2) NOT NULL,
   `activation` int(2) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_employee`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,7 +393,7 @@ CREATE TABLE `t_employee` (
 
 LOCK TABLES `t_employee` WRITE;
 /*!40000 ALTER TABLE `t_employee` DISABLE KEYS */;
-INSERT INTO `t_employee` VALUES (1,'Allam','Faiq',1,'faiq.kaboel@gmail.com','jl. batubara','081515291890','2018-11-30 01:04:35',NULL,0,1),(2,'Febriyani','Hesti',0,'hesti.febriyani115@gmail.','jl. bandulan','08123456789','2018-11-30 01:07:07',NULL,1,1),(3,'Tantular','Robert',1,'robert@gmail.com','jl. raya tumpang','08111222333','2018-12-14 02:43:10',NULL,1,1),(4,'Sujadi','Andrew',1,'ansuj@gmail.com','jl. kembang turi','08222111333','2018-12-14 02:43:53',NULL,1,1),(5,'Suryawan','Johnny',1,'johnny.sur@gmail.com','jl. taliban','08299299111','2018-12-14 02:55:06',NULL,1,1),(6,'Elizabeth','Siti',0,'siti.hehe@gmail.com','jl. sulfat','089722980212','2018-12-14 02:55:06',NULL,2,1),(7,'Saritem','Jenny',0,'jennem@gmail.com','jl. sawojajar','083211091921','2018-12-14 02:55:06',NULL,2,1),(8,'Hendrawan','Alex',1,'mr.alex@gmail.com','jl. tenaga','085122098777','2018-12-14 02:55:06',NULL,1,1),(9,'Van Bosch','Ayu',1,'vanayu@gmail.com','jl. ijen','081211790900','2018-12-14 02:55:06',NULL,2,1),(10,'Ferguso','Aji',1,'goool@gmail.com','jl. kembang mayit','08999666000','2018-12-14 02:55:06',NULL,1,1),(12,'Wellick','Tyrell',1,'wellick.ty@email.com','Jl. Sukodiharjo','08921222453','2018-12-19 04:27:52',NULL,0,1),(13,'Alderson','Elliot',1,'elliot.alderson@email.com','Jl. wikwik','08124133452','2018-12-19 04:33:46',NULL,3,1),(14,'Moss','Angela',0,'moss.angela@mrrobot.com','Jl. Sunan Kalijaga','08123331241','2018-12-21 07:39:31',NULL,2,1),(16,'Goddard','Gideon',1,'giddard@email.com','Jl. Sengkaling','0812121212','2018-12-27 04:33:16',NULL,3,1);
+INSERT INTO `t_employee` VALUES (1,'Allam','Faiq',1,'faiq.kaboel@gmail.com','jl. batubara','081515291890','2018-11-30 01:04:35',NULL,0,1),(2,'Febriyani','Hesti',0,'hesti.febriyani115@gmail.','jl. bandulan','08123456789','2018-11-30 01:07:07',NULL,1,1),(3,'Tantular','Robert',1,'robert@gmail.com','jl. raya tumpang','08111222333','2018-12-14 02:43:10',NULL,1,1),(4,'Sujadi','Andrew',1,'ansuj@gmail.com','jl. kembang turi','08222111333','2018-12-14 02:43:53',NULL,1,1),(5,'Suryawan','Johnny',1,'johnny.sur@gmail.com','jl. taliban','08299299111','2018-12-14 02:55:06',NULL,1,1),(6,'Elizabeth','Siti',0,'siti.hehe@gmail.com','jl. sulfat','089722980212','2018-12-14 02:55:06',NULL,2,1),(7,'Saritem','Jenny',0,'jennem@gmail.com','jl. sawojajar','083211091921','2018-12-14 02:55:06',NULL,2,1),(8,'Hendrawan','Alex',1,'mr.alex@gmail.com','jl. tenaga','085122098777','2018-12-14 02:55:06',NULL,1,1),(9,'Van Bosch','Ayu',1,'vanayu@gmail.com','jl. ijen','081211790900','2018-12-14 02:55:06',NULL,2,1),(10,'Ferguso','Aji',1,'goool@gmail.com','jl. kembang mayit','08999666000','2018-12-14 02:55:06',NULL,1,1),(12,'Wellick','Tyrell',1,'wellick.ty@email.com','Jl. Sukodiharjo','08921222453','2018-12-19 04:27:52',NULL,0,1),(14,'Moss','Angela',0,'moss.angela@mrrobot.com','Jl. Sunan Kalijaga','08123331241','2018-12-21 07:39:31',NULL,2,1);
 /*!40000 ALTER TABLE `t_employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -406,4 +406,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-27  6:02:00
+-- Dump completed on 2018-12-28  3:43:02
