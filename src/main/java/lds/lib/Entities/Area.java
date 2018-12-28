@@ -73,5 +73,8 @@ public class Area {
         this.postalCode = postalCode;
     }
     
-    
+    @Override
+    public String toString() {
+        return cityregency+", "+district;
+    }
 }
