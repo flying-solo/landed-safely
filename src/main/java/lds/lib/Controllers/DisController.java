@@ -37,7 +37,7 @@ public class DisController implements DisDAO {
                 rs.getString("district_name")
             );
             return dis;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return null;

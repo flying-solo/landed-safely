@@ -3,7 +3,7 @@
  *  * Muhammad Faiq Allam | faiq.kaboel@gmail.com
  */
 
-package lds.lib.Models.tableModels;
+package lds.lib.Models.tables;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
