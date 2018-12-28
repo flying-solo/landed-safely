@@ -4,6 +4,10 @@
  */
 package lds.main;
 
+import lds.main.Internals.AreaFrm;
+import lds.main.Internals.EmpFrm;
+import lds.main.Internals.TrxFrm;
+import lds.main.Internals.AdminFrm;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
