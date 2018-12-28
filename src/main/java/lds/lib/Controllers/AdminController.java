@@ -19,10 +19,26 @@ import lds.lib.Libs.Conn;
 public class AdminController implements AdminDAO {
 
     private Connection con;
+    private String select;
     
     public AdminController() {
         try {
             this.con = Conn.initConn();
+            this.select = 
+                "SELECT " +
+                "    A.id_admin, " +
+                "    A.id_employee, " +
+                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
+                "    A.username, " +
+                "    A.password, " +
+                "    A.salt_value, " + 
+                "    A.date_reg, " +
+                "    A.permit " +
+                "FROM " +
+                "    t_admin AS A " +
+                "LEFT JOIN t_employee AS E " +
+                "ON " +
+                "    A.id_employee = E.id_employee ";
         } catch (SQLException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,22 +67,7 @@ public class AdminController implements AdminDAO {
     public ArrayList<Admin> getAllAdmin() {
         ArrayList<Admin> result = new ArrayList<>();
         try {
-            PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "    A.id_admin, " +
-                "    A.id_employee, " +
-                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
-                "    A.username, " +
-                "    A.password, " +
-                "    A.salt_value, " + 
-                "    A.date_reg, " +
-                "    A.permit " +
-                "FROM " +
-                "    t_admin AS A " +
-                "LEFT JOIN t_employee AS E " +
-                "ON " +
-                "    A.id_employee = E.id_employee"
-            );
+            PreparedStatement st = con.prepareStatement(select);
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
                 Admin admin = this.extractResult(rs);
@@ -84,20 +85,7 @@ public class AdminController implements AdminDAO {
         ArrayList<Admin> result = new ArrayList<>();
         try {
             PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "    A.id_admin, " +
-                "    A.id_employee, " +
-                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
-                "    A.username, " +
-                "    A.password, " +
-                "    A.salt_value, " + 
-                "    A.date_reg, " +
-                "    A.permit " +
-                "FROM " +
-                "    t_admin AS A " +
-                "LEFT JOIN t_employee AS E " +
-                "ON " +
-                "    A.id_employee = E.id_employee " +
+                select +
                 "WHERE A.permit = ?"
             );
             st.setInt(1, permit);
@@ -118,20 +106,7 @@ public class AdminController implements AdminDAO {
         ArrayList<Admin> result = new ArrayList<>();
         try {
             PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "    A.id_admin, " +
-                "    A.id_employee, " +
-                "    CONCAT(E.firstname, ' ', E.lastname) AS name, " +
-                "    A.username, " +
-                "    A.password, " +
-                "    A.salt_value, " + 
-                "    A.date_reg, " +
-                "    A.permit " +
-                "FROM " +
-                "    t_admin AS A " +
-                "LEFT JOIN t_employee AS E " +
-                "ON " +
-                "    A.id_employee = E.id_employee " +
+                select +
                 "WHERE E.lastname LIKE ? OR E.firstname LIKE ?"
             );
             st.setString(1, "%"+name+"%");
@@ -142,6 +117,24 @@ public class AdminController implements AdminDAO {
                 result.add(admin);
             }
             return result;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    @Override
+    public Admin getAdmByUsername(String username) {
+        try {
+            PreparedStatement st = con.prepareStatement(
+                select +
+                "WHERE A.username = ?"
+            );
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return this.extractResult(rs);
+            }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -231,36 +224,6 @@ public class AdminController implements AdminDAO {
             System.err.println(e.getMessage());
         }
         return false;
-    }
-
-    @Override
-    public Admin getAdmByUsername(String username) {
-        try {
-            PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "   A.id_admin, " +
-                "   A.id_employee, " +
-                "   CONCAT(E.firstname, ' ', E.lastname) AS name, " +
-                "   A.username, " +
-                "   A.password, " +
-                "   A.salt_value, " + 
-                "   A.date_reg, " +
-                "   A.permit " +
-                "FROM " +
-                "   t_admin AS A " +
-                "LEFT JOIN t_employee AS E " +
-                "   ON A.id_employee = E.id_employee " +
-                "WHERE A.username = ?"
-            );
-            st.setString(1, username);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()) {
-                return this.extractResult(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
     }
 
 }
