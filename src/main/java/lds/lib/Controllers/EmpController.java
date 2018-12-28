@@ -21,10 +21,28 @@ import lds.lib.Libs.Conn;
 public class EmpController implements EmpDAO {
     
     private Connection con;
+    private String select;
     
     public EmpController() {
         try {
             this.con = Conn.initConn();
+            this.select = 
+                "SELECT " +
+                "   E.id_employee, " +
+                "   E.lastname, " +
+                "   E.firstname, " +
+                "   E.gender, " +
+                "   E.email, " +
+                "   E.address, " +
+                "   E.phone, " +
+                "   E.date_reg, " +
+                "   E.date_upd, " +
+                "   E.position, " +
+                "   E.activation, " +
+                "   A.id_admin " +
+                "FROM t_employee AS E " +
+                "LEFT JOIN t_admin AS A " +
+                "   ON E.id_employee = A.id_employee ";
         } catch (SQLException ex) {
             Logger.getLogger(EmpController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -57,24 +75,7 @@ public class EmpController implements EmpDAO {
     public ArrayList<Employee> getAllEmp() {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "   E.id_employee, " +
-                "   E.lastname, " +
-                "   E.firstname, " +
-                "   E.gender, " +
-                "   E.email, " +
-                "   E.address, " +
-                "   E.phone, " +
-                "   E.date_reg, " +
-                "   E.date_upd, " +
-                "   E.position, " +
-                "   E.activation, " +
-                "   A.id_admin " +
-                "FROM t_employee AS E " +
-                "LEFT JOIN t_admin AS A " +
-                "   ON E.id_employee = A.id_employee "
-            );
+            PreparedStatement st = con.prepareStatement(select);
             ResultSet rs = st.executeQuery();
             
             while(rs.next()) {
@@ -94,22 +95,7 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "   E.id_employee, " +
-                "   E.lastname, " +
-                "   E.firstname, " +
-                "   E.gender, " +
-                "   E.email, " +
-                "   E.address, " +
-                "   E.phone, " +
-                "   E.date_reg, " +
-                "   E.date_upd, " +
-                "   E.position, " +
-                "   E.activation, " +
-                "   A.id_admin " +
-                "FROM t_employee AS E " +
-                "LEFT JOIN t_admin AS A " +
-                "   ON E.id_employee = A.id_employee " +
+                select +
                 "WHERE E.lastname LIKE ? OR E.firstname LIKE ?"
             );
             st.setString(1, "%"+name+"%");
@@ -133,22 +119,7 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "   E.id_employee, " +
-                "   E.lastname, " +
-                "   E.firstname, " +
-                "   E.gender, " +
-                "   E.email, " +
-                "   E.address, " +
-                "   E.phone, " +
-                "   E.date_reg, " +
-                "   E.date_upd, " +
-                "   E.position, " +
-                "   E.activation, " +
-                "   A.id_admin " +
-                "FROM t_employee AS E " +
-                "LEFT JOIN t_admin AS A " +
-                "   ON E.id_employee = A.id_employee "+
+                select +
                 "WHERE E.activation = ?"
             );
             st.setString(1, status);
@@ -171,22 +142,7 @@ public class EmpController implements EmpDAO {
         ArrayList<Employee> result = new ArrayList<>();
         try {
             PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "   E.id_employee, " +
-                "   E.lastname, " +
-                "   E.firstname, " +
-                "   E.gender, " +
-                "   E.email, " +
-                "   E.address, " +
-                "   E.phone, " +
-                "   E.date_reg, " +
-                "   E.date_upd, " +
-                "   E.position, " +
-                "   E.activation, " +
-                "   A.id_admin " +
-                "FROM t_employee AS E " +
-                "LEFT JOIN t_admin AS A " +
-                "   ON E.id_employee = A.id_employee " +
+                select +
                 "WHERE E.position = ?"
             );
             st.setString(1, position);
@@ -208,22 +164,7 @@ public class EmpController implements EmpDAO {
     public Employee getEmpById(int id) {
         try {
             PreparedStatement st = con.prepareStatement(
-                "SELECT " +
-                "   E.id_employee, " +
-                "   E.lastname, " +
-                "   E.firstname, " +
-                "   E.gender, " +
-                "   E.email, " +
-                "   E.address, " +
-                "   E.phone, " +
-                "   E.date_reg, " +
-                "   E.date_upd, " +
-                "   E.position, " +
-                "   E.activation, " +
-                "   A.id_admin " +
-                "FROM t_employee AS E " +
-                "LEFT JOIN t_admin AS A " +
-                "   ON E.id_employee = A.id_employee " +
+                select +
                 "WHERE E.id_employee = ?"
             );
             st.setInt(1, id);
@@ -241,9 +182,10 @@ public class EmpController implements EmpDAO {
     @Override
     public boolean insertEmp(Employee emp) {
         try {
-            PreparedStatement st = con.prepareStatement("INSERT INTO t_employee ("
-                    + "lastname, firstname, gender, email, address, phone, position"
-                    + ") VALUES (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement st = con.prepareStatement(
+                "INSERT INTO t_employee (lastname, firstname, gender, email, address, phone, position) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)"
+            );
             st.setString(1, emp.getLastname());
             st.setString(2, emp.getFirstname());
             st.setInt(3, emp.getGender());
