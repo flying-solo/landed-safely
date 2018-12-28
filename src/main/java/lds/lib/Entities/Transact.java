@@ -8,11 +8,27 @@ package lds.lib.Entities;
 
 public class Transact {
     private String id;
+    
+    private String admin;
     private int id_admin;
+    
     private int id_courier;
+    private String courier;
+    
+    private int id_ship;
+    private String ship;
+    private int id_cnee;
+    private String cnee;
+    
     private int id_fleet;
-    private int id_orig;
-    private int id_dest;
+    private String fleet;
+    
+    private String id_orig;
+    private String orig;
+    
+    private String id_dest;
+    private String dest;
+    
     private String pkg_details;
     private int pkg_weight;
     private int pkg_type;
@@ -21,10 +37,13 @@ public class Transact {
     private String date_arrived;
     private int status;
     private int total;
-    
 
     public String getId() {
         return id;
+    }
+
+    public String getAdmin() {
+        return admin;
     }
 
     public int getId_admin() {
@@ -35,16 +54,48 @@ public class Transact {
         return id_courier;
     }
 
+    public String getCourier() {
+        return courier;
+    }
+    
+    public int getId_ship() {
+        return id_ship;
+    }
+
+    public String getShip() {
+        return ship;
+    }
+    
+    public int getId_cnee() {
+        return id_cnee;
+    }
+
+    public String getCnee() {
+        return cnee;
+    }
+
     public int getId_fleet() {
         return id_fleet;
     }
 
-    public int getId_orig() {
+    public String getFleet() {
+        return fleet;
+    }
+
+    public String getId_orig() {
         return id_orig;
     }
 
-    public int getId_dest() {
+    public String getOrig() {
+        return orig;
+    }
+
+    public String getId_dest() {
         return id_dest;
+    }
+
+    public String getDest() {
+        return dest;
     }
 
     public String getPkg_details() {
@@ -83,6 +134,10 @@ public class Transact {
         this.id = id;
     }
 
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
+
     public void setId_admin(int id_admin) {
         this.id_admin = id_admin;
     }
@@ -91,16 +146,48 @@ public class Transact {
         this.id_courier = id_courier;
     }
 
+    public void setCourier(String courier) {
+        this.courier = courier;
+    }
+    
+    public void setId_ship(int id_ship) {
+        this.id_ship = id_ship;
+    }
+
+    public void setShip(String ship) {
+        this.ship = ship;
+    }
+    
+    public void setId_cnee(int id_cnee) {
+        this.id_cnee = id_cnee;
+    }
+
+    public void setCnee(String cnee) {
+        this.cnee = cnee;
+    }
+
     public void setId_fleet(int id_fleet) {
         this.id_fleet = id_fleet;
     }
 
-    public void setId_orig(int id_orig) {
+    public void setFleet(String fleet) {
+        this.fleet = fleet;
+    }
+
+    public void setId_orig(String id_orig) {
         this.id_orig = id_orig;
     }
 
-    public void setId_dest(int id_dest) {
+    public void setOrig(String orig) {
+        this.orig = orig;
+    }
+
+    public void setId_dest(String id_dest) {
         this.id_dest = id_dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
     }
 
     public void setPkg_details(String pkg_details) {
@@ -134,6 +221,8 @@ public class Transact {
     public void setTotal(int total) {
         this.total = total;
     }
+
+    
     
     
 }
