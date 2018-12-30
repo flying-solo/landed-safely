@@ -15,6 +15,6 @@ import lds.lib.Entities.ServiceType;
  */
 public interface PriceDAO {
     ArrayList<Price> getAllPrice();
-    ArrayList<Price> getPriceByParam(CityRegency orig, CityRegency dest, ServiceType serv);
+    Price getPriceByParam(CityRegency orig, CityRegency dest, ServiceType serv);
     ArrayList<Price> getPriceByServ(ServiceType serv);
 }
