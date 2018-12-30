@@ -75,6 +75,6 @@ public class Area {
     
     @Override
     public String toString() {
-        return cityregency+", "+district;
+        return subDistrict +", "+ cityregency;
     }
 }
