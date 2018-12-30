@@ -116,6 +116,30 @@ public class AreaController implements AreaDAO {
     }
     
     @Override
+    public ArrayList<Area> getAreaByCir(CityRegency cir) {
+        int id = cir.getId();
+        
+        ArrayList<Area> result = new ArrayList<>();
+                
+        try {
+            PreparedStatement st = con.prepareStatement(
+                select +
+                "WHERE A.id_cityregency = ?"
+            );
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+                Area area = this.extractResult(rs);
+                result.add(area);
+            }
+            return result;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    @Override
     public Area getAreaById(String id) {
         try {
             PreparedStatement st = con.prepareStatement(
