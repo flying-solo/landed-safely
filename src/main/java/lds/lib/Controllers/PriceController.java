@@ -80,23 +80,20 @@ public class PriceController implements PriceDAO {
     }
 
     @Override
-    public ArrayList<Price> getPriceByParam(CityRegency orig, CityRegency dest, ServiceType serv) {        
-        ArrayList<Price> result = new ArrayList<>();
+    public Price getPriceByParam(CityRegency orig, CityRegency dest, ServiceType serv) {        
                 
         try {
             PreparedStatement st = con.prepareStatement(
                 select + 
-                "WHERE id_origin = ? AND id_destination = ? AND id_service = ?"
+                "WHERE P.id_origin = ? AND P.id_destination = ? AND P.id_service = ?"
             );
             st.setInt(1, orig.getId());
             st.setInt(2, dest.getId());
             st.setInt(3, serv.getId());
             ResultSet rs = st.executeQuery();
-            while(rs.next()) {
-                Price prc = this.extractResult(rs);
-                result.add(prc);
+            if(rs.next()) {
+                return this.extractResult(rs);
             }
-            return result;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -110,7 +107,7 @@ public class PriceController implements PriceDAO {
         try {
             PreparedStatement st = con.prepareStatement(
                 select + 
-                "WHERE id_service = ?"
+                "WHERE P.id_service = ?"
             );
             st.setInt(1, service.getId());
             ResultSet rs = st.executeQuery();
