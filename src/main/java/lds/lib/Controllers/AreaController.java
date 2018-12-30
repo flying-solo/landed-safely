@@ -31,6 +31,7 @@ public class AreaController implements AreaDAO {
             this.select = 
                 "SELECT " +
                 "    A.id_area, " +
+                "    A.id_cityregency, " +
                 "    P.province_name, " +
                 "    C.cityregency_name, " +
                 "    D.district_name, " +
@@ -57,6 +58,7 @@ public class AreaController implements AreaDAO {
             Area area = new Area(
                 rs.getString("id_area"),
                 rs.getString("province_name"),
+                rs.getInt("id_cityregency"),
                 rs.getString("cityregency_name"),
                 rs.getString("district_name"),
                 rs.getString("sub_district"),
