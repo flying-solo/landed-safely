@@ -223,6 +223,7 @@ public class AddAreaFrm extends javax.swing.JDialog {
             Area area = new Area(
                 id,
                 prov.getProvince(),
+                cir.getId(),
                 cir.getCityregency(),
                 dis.getDistrict(),
                 this.txtSub.getText(),
