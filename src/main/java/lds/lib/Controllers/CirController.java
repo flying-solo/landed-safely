@@ -94,6 +94,21 @@ public class CirController implements CirDAO {
         return null;
     }
 
+    public CityRegency getCirById(int id) {
+        try {
+            PreparedStatement st = con.prepareStatement(
+               "SELECT * FROM m_cityregency WHERE id_cityregency = ?"     
+            );
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return this.extractResult(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
 
     
 }
