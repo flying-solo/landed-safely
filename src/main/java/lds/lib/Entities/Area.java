@@ -9,6 +9,7 @@ package lds.lib.Entities;
 public class Area {
     private String id;
     private String province;
+    private int id_cityregency;
     private String cityregency;
     private String district;
     private String subDistrict;
@@ -16,9 +17,10 @@ public class Area {
 
     public Area() {}
 
-    public Area(String id, String province, String cityregency, String district, String subDistrict, String postalCode) {
+    public Area(String id, String province, int id_cityregency, String cityregency, String district, String subDistrict, String postalCode) {
         this.id = id;
         this.province = province;
+        this.id_cityregency = id_cityregency;
         this.cityregency = cityregency;
         this.district = district;
         this.subDistrict = subDistrict;
@@ -72,6 +74,16 @@ public class Area {
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
+
+    public int getId_cityregency() {
+        return id_cityregency;
+    }
+
+    public void setId_cityregency(int id_cityregency) {
+        this.id_cityregency = id_cityregency;
+    }
+    
+    
     
     @Override
     public String toString() {
