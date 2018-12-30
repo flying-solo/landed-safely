@@ -6,6 +6,7 @@ package lds.main.Internals;
 
 import java.awt.event.ItemEvent;
 import javax.swing.JDialog;
+import lds.lib.Entities.Admin;
 import lds.lib.Frames.AddTrxFrm;
 import lds.lib.Libs.Print;
 import lds.main.MainFrm;
@@ -18,12 +19,14 @@ import lds.main.MainFrm;
 public class TrxFrm extends javax.swing.JInternalFrame {
     
     private final MainFrm main;
+    private final Admin activeUser;
     private final Print print;
     
     private JDialog dialog;
     
-    public TrxFrm() {
+    public TrxFrm(Admin activeUser) {
         this.main = new MainFrm();
+        this.activeUser = activeUser;
         this.print = new Print("Transaction");
         
         initComponents();
@@ -362,7 +365,7 @@ public class TrxFrm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnFilterActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        JDialog frm = new AddTrxFrm(new MainFrm(), true);
+        JDialog frm = new AddTrxFrm(this.main, true, this.activeUser);
         setDialog(frm);
     }//GEN-LAST:event_btnAddActionPerformed
 
