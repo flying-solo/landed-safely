@@ -104,10 +104,6 @@ public class MainFrm extends javax.swing.JFrame {
         this.activeUser = activeUser;
     }
     
-    public Admin getActiveUser() {
-        return this.activeUser;
-    }
-    
     private void clearLoginFields() {
         this.txtUser.setText("");
         this.txtPass.setText("");
@@ -462,7 +458,7 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_mnLogoutActionPerformed
 
     private void mnTrxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnTrxActionPerformed
-        TrxFrm frm = new TrxFrm();
+        TrxFrm frm = new TrxFrm(this.activeUser);
         this.setActiveFrame(frm);
     }//GEN-LAST:event_mnTrxActionPerformed
 
