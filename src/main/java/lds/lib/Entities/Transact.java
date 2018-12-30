@@ -31,12 +31,24 @@ public class Transact {
     
     private String pkg_details;
     private int pkg_weight;
+    
     private int pkg_type;
+    private String pkg;
+    
     private int service_type;
+    private String serv;
+    
     private String date_reg;
     private String date_arrived;
     private int status;
     private int total;
+    
+    private String cir_orig;
+    private String cir_dest;
+    private String area_orig;
+    private String area_dest;
+    private String postal_orig;
+    private String postal_dest;
 
     public String getId() {
         return id;
@@ -222,5 +234,74 @@ public class Transact {
         this.total = total;
     }
 
+    public String getPkg() {
+        return pkg;
+    }
+
+    public void setPkg(String pkg) {
+        this.pkg = pkg;
+    }
+
+    public String getServ() {
+        return serv;
+    }
+
+    public void setServ(String serv) {
+        this.serv = serv;
+    }
+
+    public String getCir_orig() {
+        return cir_orig;
+    }
+
+    public void setCir_orig(String cir_orig) {
+        this.cir_orig = cir_orig;
+    }
+
+    public String getCir_dest() {
+        return cir_dest;
+    }
+
+    public void setCir_dest(String cir_dest) {
+        this.cir_dest = cir_dest;
+    }
+
+    public String getArea_orig() {
+        return area_orig;
+    }
+
+    public void setArea_orig(String area_orig) {
+        this.area_orig = area_orig;
+    }
+
+    public String getArea_dest() {
+        return area_dest;
+    }
+
+    public void setArea_dest(String area_dest) {
+        this.area_dest = area_dest;
+    }
+
+    public String getPostal_orig() {
+        return postal_orig;
+    }
+
+    public void setPostal_orig(String postal_orig) {
+        this.postal_orig = postal_orig;
+    }
+
+    public String getPostal_dest() {
+        return postal_dest;
+    }
+
+    public void setPostal_dest(String postal_dest) {
+        this.postal_dest = postal_dest;
+    }
+
+    
+    
+    
+    
+    
     
 }
