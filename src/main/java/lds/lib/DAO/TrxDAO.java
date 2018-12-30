@@ -6,6 +6,8 @@ package lds.lib.DAO;
 
 import java.util.ArrayList;
 import lds.lib.Entities.Transact;
+import lds.lib.Entities.PackageType;
+import lds.lib.Entities.ServiceType;
 
 /**
  *
@@ -18,4 +20,8 @@ public interface TrxDAO {
     ArrayList<Transact> getTrxByDest(int id_dest);
     ArrayList<Transact> getTrxByServ(int id_serv);
     boolean insertTrx(Transact trx);
+    
+    ArrayList<PackageType> getAllType();
+    
+    ArrayList<ServiceType> getAllServ();
 }
